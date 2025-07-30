@@ -1,5 +1,6 @@
 import 'package:amazon/constants/common_functions.dart';
 import 'package:amazon/utils/colors.dart';
+import 'package:amazon/view/auth_screens.dart';
 import 'package:flutter/material.dart';
 
 class OTPScreen extends StatefulWidget {
@@ -12,7 +13,7 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
-  TextEditingController nameController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +60,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    TextSpan(
-                      text: ' Change',
-                      style: textTheme.bodyMedium,
-                    ),
+                    TextSpan(text: ' Change', style: textTheme.bodyMedium),
                   ],
                 ),
               ),
@@ -70,10 +68,41 @@ class _OTPScreenState extends State<OTPScreen> {
               CommonFunctions.blankSpace(height * 0.01, 0),
 
               Text(
-                  "We have sent a One Time Password (OTP) to the mobile number above. Please enter it to complete verification",
-                  style: textTheme.bodyMedium,
+                "We have sent a One Time Password (OTP) to the mobile number above. Please enter it to complete verification",
+                style: textTheme.bodyMedium,
               ),
 
+              CommonFunctions.blankSpace(height * 0.01, 0),
+              TextField(
+                controller: otpController,
+                decoration: InputDecoration(
+                  hintText: 'OTP',
+                  hintStyle: textTheme.bodySmall,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(color: grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(color: secondaryColor),
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(color: grey),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(color: grey),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 0,
+                  ),
+                ),
+              ),
+              CommonFunctions.blankSpace(height * 0.01, 0),
+              CommonAuthButton(title: 'Continue',btnWidth: 0.94, onPressed: () {}),
+              CommonFunctions.blankSpace(height * 0.01, 0),
             ],
           ),
         ),

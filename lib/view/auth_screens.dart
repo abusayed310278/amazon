@@ -319,7 +319,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 //   child: Text('Continue', style: textTheme.displaySmall),
                 // ),
 
-                CommonAuthButton(title:'Continue',onPressed: (){
+                CommonAuthButton(title:'Continue',btnWidth: 0.88,onPressed: (){
 
                 },),
 
@@ -656,10 +656,11 @@ class _AuthScreenState extends State<AuthScreen> {
 }
 
 class CommonAuthButton extends StatelessWidget {
-  CommonAuthButton({super.key, required this.title, required this.onPressed});
+  CommonAuthButton({super.key, required this.title, required this.onPressed,required this.btnWidth});
 
   String title;
   VoidCallback onPressed;
+  double btnWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -670,7 +671,7 @@ class CommonAuthButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: () {},
       style: ElevatedButton.styleFrom(
-        minimumSize: Size(width * 0.88, height * 0.06),
+        minimumSize: Size(width * btnWidth, height * 0.06),
         backgroundColor: Colors.amber,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       ),

@@ -14,10 +14,10 @@ class Amazon extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme:theme,
-        // home:OTPScreen(
-        //   mobileNumber: '+91101010101010',
-        // ),
-        home:AuthScreen(),
+        home:OTPScreen(
+          mobileNumber: '+91101010101010',
+        ),
+        // home:AuthScreen(),
         debugShowCheckedModeBanner: false,
     );
   }
