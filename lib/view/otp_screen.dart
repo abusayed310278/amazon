@@ -119,6 +119,7 @@ class _OTPScreenState extends State<OTPScreen> {
                   ),
                 ],
               ),
+               BottomAuthScreenWidget(width: width, height: height, textTheme: textTheme),
             ],
           ),
         ),
