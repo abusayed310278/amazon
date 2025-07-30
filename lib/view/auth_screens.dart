@@ -610,7 +610,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
                 CommonFunctions.blankSpace(height * 0.02, 0),
 
-                CommonAuthButton(title: 'Continue', onPressed: () {}),
+                CommonAuthButton(title: 'Continue',btnWidth: 0.88, onPressed: () {}),
 
                 CommonFunctions.blankSpace(height * 0.02, 0),
 
@@ -658,9 +658,9 @@ class _AuthScreenState extends State<AuthScreen> {
 class CommonAuthButton extends StatelessWidget {
   CommonAuthButton({super.key, required this.title, required this.onPressed,required this.btnWidth});
 
-  String title;
-  VoidCallback onPressed;
-  double btnWidth;
+  final String title;
+  final VoidCallback onPressed;
+  final double btnWidth;
 
   @override
   Widget build(BuildContext context) {

@@ -102,7 +102,23 @@ class _OTPScreenState extends State<OTPScreen> {
               ),
               CommonFunctions.blankSpace(height * 0.01, 0),
               CommonAuthButton(title: 'Continue',btnWidth: 0.94, onPressed: () {}),
-              CommonFunctions.blankSpace(height * 0.01, 0),
+              CommonFunctions.blankSpace(height * 0.03, 0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      onPressed: (){
+
+                      },
+                      child: Text(
+                        'Resend OTP',
+                        style:textTheme.bodySmall!.copyWith(
+                          color:blue,
+                        ),
+                      ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
