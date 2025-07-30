@@ -307,17 +307,21 @@ class _AuthScreenState extends State<AuthScreen> {
 
                 CommonFunctions.blankSpace(height * 0.02, 0),
 
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(width * 0.88, height * 0.06),
-                    backgroundColor: Colors.amber,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero,
-                    ),
-                  ),
-                  child: Text('Continue', style: textTheme.displaySmall),
-                ),
+                // ElevatedButton(
+                //   onPressed: () {},
+                //   style: ElevatedButton.styleFrom(
+                //     minimumSize: Size(width * 0.88, height * 0.06),
+                //     backgroundColor: Colors.amber,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.zero,
+                //     ),
+                //   ),
+                //   child: Text('Continue', style: textTheme.displaySmall),
+                // ),
+
+                CommonAuthButton(title:'Continue',onPressed: (){
+
+                },),
 
                 CommonFunctions.blankSpace(height * 0.02, 0),
 
@@ -606,17 +610,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
                 CommonFunctions.blankSpace(height * 0.02, 0),
 
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(width * 0.88, height * 0.06),
-                    backgroundColor: Colors.amber,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero,
-                    ),
-                  ),
-                  child: Text('Continue', style: textTheme.displaySmall),
-                ),
+                CommonAuthButton(title: 'Continue', onPressed: () {}),
 
                 CommonFunctions.blankSpace(height * 0.02, 0),
 
@@ -657,6 +651,30 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CommonAuthButton extends StatelessWidget {
+  CommonAuthButton({super.key, required this.title, required this.onPressed});
+
+  String title;
+  VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final textTheme = Theme.of(context).textTheme;
+
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size(width * 0.88, height * 0.06),
+        backgroundColor: Colors.amber,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      ),
+      child: Text('Continue', style: textTheme.displaySmall),
     );
   }
 }
