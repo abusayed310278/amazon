@@ -1,3 +1,4 @@
+import 'package:amazon/controller/provider/auth_provider.dart';
 import 'package:amazon/firebase_options.dart';
 import 'package:amazon/utils/theme.dart';
 import 'package:amazon/view/auth_screens.dart';
@@ -27,6 +28,7 @@ class Amazon extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_)=>AuthProvider()),
 
       ],
       child: MaterialApp(
