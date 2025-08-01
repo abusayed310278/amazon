@@ -56,7 +56,7 @@ class _SignInLogicState extends State<SignInLogic> {
     Navigator.pushAndRemoveUntil(
         context,
         PageTransition(
-            child: const HomeScreen(),
+            child: const AuthScreen(),
             type: PageTransitionType.rightToLeft),
             (route) => false)
         :

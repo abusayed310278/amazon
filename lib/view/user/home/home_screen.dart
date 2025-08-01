@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
                     width: width*0.08,
