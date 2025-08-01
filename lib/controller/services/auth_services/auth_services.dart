@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:amazon/view/signInLogic.dart';
 
 class AuthServices {
   static bool checkAuthentication() {
@@ -64,7 +65,7 @@ class AuthServices {
       Navigator.push(
           context,
           PageTransition(
-            // child: const SignInLogic(),
+            child: const SignInLogic(),
             type: PageTransitionType.rightToLeft,
           ));
     } catch (e) {

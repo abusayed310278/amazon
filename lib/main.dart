@@ -3,6 +3,8 @@ import 'package:amazon/firebase_options.dart';
 import 'package:amazon/utils/theme.dart';
 import 'package:amazon/view/auth_screens.dart';
 import 'package:amazon/view/otp_screen.dart';
+import 'package:amazon/view/signInLogic.dart';
+import 'package:amazon/view/user/home/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
