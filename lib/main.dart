@@ -28,15 +28,15 @@ class Amazon extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_)=>AuthProvider()),
+        ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
 
       ],
       child: MaterialApp(
           theme:theme,
-          home:OTPScreen(
-            mobileNumber: '+91101010101010',
-          ),
-          // home:AuthScreen(),
+          // home:OTPScreen(
+          //   mobileNumber: '+91101010101010',
+          // ),
+          home:AuthScreen(),
           debugShowCheckedModeBanner: false,
       ),
     );

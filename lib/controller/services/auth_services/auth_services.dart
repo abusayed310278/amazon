@@ -1,66 +1,74 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
+
 import 'package:amazon/controller/provider/auth_provider.dart';
 import 'package:amazon/view/otp_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
+import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class AuthServices {
-  static Future<void> receiveOTP({
-    required BuildContext context,
-    required String mobileNo,
-  }) async {
+  static bool checkAuthentication() {
     FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
+    if (user != null) {
+      return true;
+    }
+    return false;
+  }
 
+  static receiveOTP(
+      {required BuildContext context, required String mobileNo}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
     try {
       await auth.verifyPhoneNumber(
-        phoneNumber: '+88$mobileNo', // Make sure to use proper country code
+        phoneNumber: mobileNo,
         verificationCompleted: (PhoneAuthCredential credential) {
-          log('Verification completed: $credential');
+          log(credential.toString());
         },
         verificationFailed: (FirebaseAuthException exception) {
-          log('Verification failed: ${exception.message}');
+          log(exception.toString());
         },
-        codeSent: (String verificationId, int? resendToken) {
-          // 🔁 Store verificationId in Provider
-          context.read<AuthProvider>().updateVerificationId(verificationId);
-
+        codeSent: (String verificationID, int? resendToken) {
+          context
+              .read<AuthProvider>()
+              .upDateverificationId(verID: verificationID);
+          context.read<AuthProvider>().upDatePhoneNum(
+            num: mobileNo,
+          );
           Navigator.push(
             context,
             PageTransition(
-              child: OTPScreen(mobileNumber: mobileNo),
-
-            type: PageTransitionType.rightToLeft,
+              child:  OTPScreen(mobileNumber: mobileNo),
+              type: PageTransitionType.rightToLeft,
             ),
           );
         },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          log('Code auto retrieval timeout');
-        },
+        codeAutoRetrievalTimeout: (String verificationID) {},
       );
     } catch (e) {
-      log('Error: $e');
+      log(e.toString());
     }
   }
 
-  static Future<void> verifyOTP({
-    required BuildContext context,
-    required String otp,
-  }) async {
+  static verifyOTP({required BuildContext context, required String otp}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
-
     try {
-      final verificationId = context.read<AuthProvider>().verificationId;
-
       AuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verificationId,
+        verificationId: context.read<AuthProvider>().verificationId,
         smsCode: otp,
       );
-
       await auth.signInWithCredential(credential);
+      Navigator.push(
+          context,
+          PageTransition(
+            // child: const SignInLogic(),
+            type: PageTransitionType.rightToLeft,
+          ));
     } catch (e) {
-      log('Error verifying OTP: $e');
+      log(e.toString());
     }
   }
 }

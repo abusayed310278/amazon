@@ -5,18 +5,13 @@ class AuthProvider extends ChangeNotifier {
   String verificationId = '';
   String otp = '';
 
-  void updatePhoneNumber(String num) {
+  upDatePhoneNum({required String num}) {
     phoneNumber = num;
     notifyListeners();
   }
 
-  void updateVerificationId(String verID) {
+  upDateverificationId({required String verID}) {
     verificationId = verID;
-    notifyListeners();
-  }
-
-  void updateOtp(String code) {
-    otp = code;
     notifyListeners();
   }
 }

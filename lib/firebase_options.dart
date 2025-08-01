@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAlyFwWHSjMVDpKXkSxAi3IXo2J6CvTM2Y',
-    appId: '1:433471871929:android:db200bcc2fb10747413468',
-    messagingSenderId: '433471871929',
-    projectId: 'fir-a6d66',
-    storageBucket: 'fir-a6d66.firebasestorage.app',
+    apiKey: 'AIzaSyDPNKBCs4TOtr7iEge0G5lwvlrfjukH12Q',
+    appId: '1:543462780954:android:7a71fa28e978009692a1a3',
+    messagingSenderId: '543462780954',
+    projectId: 'amzo-d29d7',
+    storageBucket: 'amzo-d29d7.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCzRA-OKPdIzUM-CAjYAqDenWaWZybXepo',
-    appId: '1:433471871929:ios:ff50a7487d5d1f1a413468',
-    messagingSenderId: '433471871929',
-    projectId: 'fir-a6d66',
-    storageBucket: 'fir-a6d66.firebasestorage.app',
+    apiKey: 'AIzaSyCt4Rq11sD-RfaOj0QKXsEKB7oG0SisKz8',
+    appId: '1:543462780954:ios:da2f92602e64737692a1a3',
+    messagingSenderId: '543462780954',
+    projectId: 'amzo-d29d7',
+    storageBucket: 'amzo-d29d7.firebasestorage.app',
     iosBundleId: 'com.example.amazon',
   );
+
 }
