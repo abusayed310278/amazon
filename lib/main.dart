@@ -38,8 +38,8 @@ class Amazon extends StatelessWidget {
           // home:OTPScreen(
           //   mobileNumber: '+91101010101010',
           // ),
-          home:const SignInLogic(),
-          debugShowCheckedModeBanner: false,
+          home:const HomeScreen(),
+          debugShowCheckedModeBanner: true,
       ),
     );
   }

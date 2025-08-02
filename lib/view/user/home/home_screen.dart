@@ -1,20 +1,28 @@
 import 'dart:developer';
+import 'package:amazon/constants/common_functions.dart';
+import 'package:amazon/constants/constants.dart';
 import 'package:flutter/material.dart';
 import '../../../utils/colors.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_controller.dart';
+
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final textThem=Theme.of(context).textTheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return SafeArea(
       child: Scaffold(
@@ -104,13 +112,69 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-              SizedBox(height: height * 0.02),
+              Divider(thickness: 2, color: grey, height: 0),
 
-              Text(
-                'Welcome to Amazon.in',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              SizedBox(
+                height: height * 0.09,
+                width: width,
+                child: ListView.builder(
+                  itemCount: categories.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: EdgeInsets.symmetric(horizontal: width * 0.01),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Image(
+                            image: AssetImage(
+                              'assets/images/categories/${categories[index]}.png',
+                            ),
+                            height: height * 0.06,
+                          ),
+                          Text(
+                            categories[index],
+                            style: textTheme.labelMedium,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis, // Handle long text
+                            maxLines: 1, // Prevent vertical overflow
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  scrollDirection: Axis.horizontal,
+                ),
+              ),
+              CommonFunctions.blankSpace(height * 0.01, 0),
+              Divider(thickness: 3, color: greyShade3, height: 0),
+
+              SizedBox(
+                height: height * 0.03,
+                width: width,
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                    height: height*0.23,
+                    autoPlay: true,
+                    viewportFraction: 1,
+                  ),
+                  items: carouselPictures.map((i) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                          decoration: BoxDecoration(
+                              color: Colors.amber,
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/carousel_slideshow/$i'),
+                                fit:BoxFit.cover,
+                              ),
+                          ),
+
+                        );
+                      },
+                    );
+                  }).toList(),
                 ),
               ),
             ],
