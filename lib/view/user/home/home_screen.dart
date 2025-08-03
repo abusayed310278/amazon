@@ -67,84 +67,97 @@ class _HomeScreenState extends State<HomeScreen> {
                 todayDealsCarouselController: todayDealsCarouselController,
               ),
               CommonFunctions.divider(),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.03,
-                  vertical: height * 0.01,
-                ),
-                width: width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Latest launches in Headphones',
-                      style: textTheme.displaySmall!.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-
-                    CommonFunctions.blankSpace(height * 0.01, 0),
-
-                    GridView.builder(
-                      // The gridDelegate defines the layout of the grid.
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, // Sets 2 columns in the grid.
-                            crossAxisSpacing: 10.0, // Space between columns.
-                            mainAxisSpacing: 20.0, // Space between rows.
-                            childAspectRatio: 1.0,
-                          ),
-                      itemCount: 4,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {},
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    // border: Border.all(color: greyShade3),
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                        'assets/images/offersNsponcered/${headphonesDeals[index]}',
-                                      ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                              SizedBox(height: 5), // Optional spacing
-                              Text(
-                                headphonesDeals[index].split('.').first, // ✅ correct
-                                style: textTheme.bodyMedium,
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Explore More',
-                        style: textTheme.bodySmall!.copyWith(color: blue),
-                      ),
-                    ),
-
-                  ],
-                ),
+              OtherOfferGridWidget(
+                width,
+                height,
+                textTheme,
+                'Latest launches in Headphones',
               ),
-
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Container OtherOfferGridWidget({
+    required double width,
+    required double height,
+    required TextTheme textTheme,
+    required String title,
+    required String textBtnName,
+    required List<String> ProductPicNamesList,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: width * 0.03,
+        vertical: height * 0.01,
+      ),
+      width: width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: textTheme.displaySmall!.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          CommonFunctions.blankSpace(height * 0.01, 0),
+
+          GridView.builder(
+            // The gridDelegate defines the layout of the grid.
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Sets 2 columns in the grid.
+              crossAxisSpacing: 10.0, // Space between columns.
+              mainAxisSpacing: 20.0, // Space between rows.
+              childAspectRatio: 1.0,
+            ),
+            itemCount: 4,
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {},
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          // border: Border.all(color: greyShade3),
+                          image: DecorationImage(
+                            image: AssetImage(
+                              'assets/images/offersNsponcered/${headphonesDeals[index]}',
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 5), // Optional spacing
+                    Text(
+                      headphonesDeals[index].split('.').first, // ✅ correct
+                      style: textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              'Explore More',
+              style: textTheme.bodySmall!.copyWith(color: blue),
+            ),
+          ),
+        ],
       ),
     );
   }
