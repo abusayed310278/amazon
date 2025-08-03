@@ -5,6 +5,7 @@ import 'package:amazon/view/auth_screens.dart';
 import 'package:amazon/view/otp_screen.dart';
 import 'package:amazon/view/signInLogic.dart';
 import 'package:amazon/view/user/home/home_screen.dart';
+import 'package:amazon/view/user/profile/profile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,7 @@ class Amazon extends StatelessWidget {
           // home:OTPScreen(
           //   mobileNumber: '+91101010101010',
           // ),
-          home:const HomeScreen(),
+          home:const ProfileScreen(),
           debugShowCheckedModeBanner: true,
       ),
     );

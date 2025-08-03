@@ -16,40 +16,72 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final width = MediaQuery.of(context).size.width;
     final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      backgroundColor: white,
-      appBar: PreferredSize(
-        preferredSize: Size(width*1,height*1),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: appBarGradientColor,
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: white,
+        appBar: PreferredSize(
+          preferredSize: Size(width*1,height*0.08),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: width*0.03,
+              vertical: height*0.01,
             ),
-          ),
-        ),
-
-      ),
-      body:SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: height*0.06,
-              width: width,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: addressBarGradientColor,
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: appBarGradientColor,
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
               ),
             ),
+      
+            child: Row(
+              children: [
+                Image(
+                  image: const AssetImage(
+                    'assets/images/amazon_logo.png',
+                  ),
+                  height: height*0.04,
+                ),
+                const Spacer(),
+                IconButton(
+                  onPressed: (){
 
-          ],
+                  },
+                  icon: Icon(
+                    Icons.notifications_none,
+                    color: black,
+                    size: height*0.03,
+                  ),
+                ),
+                IconButton(
+                  onPressed: (){
+
+                  },
+                  icon: Icon(
+                    Icons.search,
+                    color: black,
+                    size: height*0.03,
+
+                  ),
+                ),
+              ],
+            ),
+          ),
+      
         ),
+        body:Container(
+          width: width,
+          padding: EdgeInsets.symmetric(
+            vertical: height*0.02,
+          ),
+          child: Column(
+            children: [
+              
+            ],
+          ),
+        ),
+      
       ),
-
     );
   }
 }
