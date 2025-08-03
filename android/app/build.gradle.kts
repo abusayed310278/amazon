@@ -12,8 +12,9 @@ android {
     namespace = "com.example.amazon"
     compileSdk = 34
     compileSdk = flutter.compileSdkVersion
-//    ndkVersion = flutter.ndkVersion
-    ndkVersion = "27.0.12077973"
+    ndkVersion = "26.2.11394342"
+//    ndkVersion = "27.0.12077973"
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

@@ -24,9 +24,23 @@ class _HomeScreenState extends State<HomeScreen> {
       case 1:
         return 'boat';
       case 2:
-        return 'SOny';
+        return 'Sony';
       case 3:
         return 'OnePlus';
+    }
+  }
+
+  clothingDeals(int index) {
+    switch (index) {
+      case 0:
+        return 'Kurtas,sarees & more';
+
+      case 1:
+        return 'Tops,dresses & more';
+      case 2:
+        return 'T-shirts,jeans & more';
+      case 3:
+        return 'View all';
     }
   }
 
@@ -68,10 +82,71 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               CommonFunctions.divider(),
               OtherOfferGridWidget(
-                width,
-                height,
-                textTheme,
-                'Latest launches in Headphones',
+                // width,
+                // height,
+                // textTheme,
+                title: 'Latest launches in Headphones',
+                textBtnName: 'Explore More',
+                productPicNamesList: headphonesDeals,
+                offerFor: 'headphones',
+              ),
+
+              Container(
+                height: height * 0.35,
+                width: width,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                      'assets/images/offersNsponcered/insurance.png',
+                    ),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+              CommonFunctions.divider(),
+              OtherOfferGridWidget(
+                title: 'Minimum 70% off | Top Offers on Clothing',
+                textBtnName: 'See all deals',
+                productPicNamesList: clothingDealsList,
+                offerFor: 'clothing',
+              ),
+
+              CommonFunctions.blankSpace(height * 0.01, 0),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+
+                children: [
+                  CommonFunctions.blankSpace(height*0.01, 0),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: width*0.03,
+                    ),
+                    child: Text(
+                      'Watch Sixer only on miniTv',
+                      style: textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+
+                    ),
+                  ),
+                  Container(
+                    height: height*0.4,
+                    width: width,
+
+                    padding: EdgeInsets.symmetric(
+                      horizontal: width*0.03,
+                      vertical: height*0.01,
+                    ),
+                    child: Image(
+                      image: AssetImage(
+                        'assets/images/offersNsponcered/sixer.png',
+
+                      ),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -81,13 +156,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Container OtherOfferGridWidget({
-    required double width,
-    required double height,
-    required TextTheme textTheme,
+    // required double width,
+    // required double height,
+    // required TextTheme textTheme,
     required String title,
     required String textBtnName,
-    required List<String> ProductPicNamesList,
+    required List<String> productPicNamesList,
+    required String offerFor,
   }) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final textTheme = Theme.of(context).textTheme;
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: width * 0.03,
@@ -99,64 +178,75 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Text(
             title,
-            style: textTheme.displaySmall!.copyWith(
+            style: textTheme.bodyMedium!.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
 
           CommonFunctions.blankSpace(height * 0.01, 0),
 
-          GridView.builder(
-            // The gridDelegate defines the layout of the grid.
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, // Sets 2 columns in the grid.
-              crossAxisSpacing: 10.0, // Space between columns.
-              mainAxisSpacing: 20.0, // Space between rows.
-              childAspectRatio: 1.0,
-            ),
-            itemCount: 4,
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {},
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          // border: Border.all(color: greyShade3),
-                          image: DecorationImage(
-                            image: AssetImage(
-                              'assets/images/offersNsponcered/${headphonesDeals[index]}',
+          productPicNamesList.isEmpty
+              ? Center(child: Text("No headphone launches available"))
+              : GridView.builder(
+                  // The gridDelegate defines the layout of the grid.
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, // Sets 2 columns in the grid.
+                    crossAxisSpacing: 10.0, // Space between columns.
+                    mainAxisSpacing: 20.0, // Space between rows.
+                    childAspectRatio: 1.0,
+                  ),
+                  itemCount: productPicNamesList.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {},
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                // border: Border.all(color: greyShade3),
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    'assets/images/offersNsponcered/${productPicNamesList[index]}',
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
-                            fit: BoxFit.cover,
                           ),
-                        ),
-                      ),
-                    ),
 
-                    SizedBox(height: 5), // Optional spacing
-                    Text(
-                      headphonesDeals[index].split('.').first, // ✅ correct
-                      style: textTheme.bodyMedium,
-                    ),
-                  ],
+                          SizedBox(height: 5), // Optional spacing
+
+                          // Text(
+                          //   headphonesDeals[index].split('.').first, // ✅ correct
+                          //   style: textTheme.bodyMedium,
+                          // ),
+                          Text(
+                            offerFor == 'headphones'
+                                ? headphoneDeals(index)
+                                : clothingDeals(index),
+                            style: textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
 
           TextButton(
             onPressed: () {},
             child: Text(
-              'Explore More',
+              textBtnName,
               style: textTheme.bodySmall!.copyWith(color: blue),
             ),
           ),
+
+
         ],
       ),
     );
