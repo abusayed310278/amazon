@@ -9,13 +9,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -33,83 +31,22 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               // Decorative top bar (optional for banners, location, etc.)
-              Container(
-                height: height * 0.06,
-                width: width,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: addressBarGradientColor,
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
-                ),
-              ),
+              HomeScreenUserAddressBar(height: height, width: width),
 
-              Divider(thickness: 2, color: grey, height: 0),
+              // Divider(thickness: 2, color: grey, height: 0),
+              CommonFunctions.divider(),
 
-              SizedBox(
-                height: height * 0.09,
+              HomeScreenCategoriesList(
+                height: height,
                 width: width,
-                child: ListView.builder(
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(horizontal: width * 0.01),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Image(
-                            image: AssetImage(
-                              'assets/images/categories/${categories[index]}.png',
-                            ),
-                            height: height * 0.06,
-                          ),
-                          Text(
-                            categories[index],
-                            style: textTheme.labelMedium,
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis, // Handle long text
-                            maxLines: 1, // Prevent vertical overflow
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  scrollDirection: Axis.horizontal,
-                ),
+                textTheme: textTheme,
               ),
               CommonFunctions.blankSpace(height * 0.01, 0),
-              Divider(thickness: 3, color: greyShade3, height: 0),
+              // Divider(thickness: 3, color: greyShade3, height: 0),
+              CommonFunctions.divider(),
+              HomeScreenBanner(height: height),
 
-              SizedBox(
-                height: height * 0.3,
-                width: width,
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    height: height*0.23,
-                    autoPlay: true,
-                    viewportFraction: 1,
-                  ),
-                  items: carouselPictures.map((i) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              image: DecorationImage(
-                                image: AssetImage('assets/images/carousel_slideshow/$i'),
-                                fit:BoxFit.cover,
-                              ),
-                          ),
 
-                        );
-                      },
-                    );
-                  }).toList(),
-                ),
-              ),
             ],
           ),
         ),
@@ -118,12 +55,116 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class HomePageAppBar extends StatelessWidget {
-  const HomePageAppBar({
+class HomeScreenBanner extends StatelessWidget {
+  const HomeScreenBanner({super.key, required this.height});
+
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: height * 0.23,
+        autoPlay: true,
+        viewportFraction: 1,
+      ),
+      items: carouselPictures.map((i) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+              decoration: BoxDecoration(
+                color: Colors.amber,
+                image: DecorationImage(
+                  image: AssetImage('assets/images/carousel_slideshow/$i'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          },
+        );
+      }).toList(),
+    );
+  }
+}
+
+class HomeScreenCategoriesList extends StatelessWidget {
+  const HomeScreenCategoriesList({
     super.key,
-    required this.width,
     required this.height,
+    required this.width,
+    required this.textTheme,
   });
+
+  final double height;
+  final double width;
+  final TextTheme textTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height * 0.09,
+      width: width,
+      child: ListView.builder(
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: EdgeInsets.symmetric(horizontal: width * 0.01),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Image(
+                  image: AssetImage(
+                    'assets/images/categories/${categories[index]}.png',
+                  ),
+                  height: height * 0.06,
+                ),
+                Text(
+                  categories[index],
+                  style: textTheme.labelMedium,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis, // Handle long text
+                  maxLines: 1, // Prevent vertical overflow
+                ),
+              ],
+            ),
+          );
+        },
+        scrollDirection: Axis.horizontal,
+      ),
+    );
+  }
+}
+
+class HomeScreenUserAddressBar extends StatelessWidget {
+  const HomeScreenUserAddressBar({
+    super.key,
+    required this.height,
+    required this.width,
+  });
+
+  final double height;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height * 0.06,
+      width: width,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: addressBarGradientColor,
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+      ),
+    );
+  }
+}
+
+class HomePageAppBar extends StatelessWidget {
+  const HomePageAppBar({super.key, required this.width, required this.height});
 
   final double width;
   final double height;
@@ -159,9 +200,7 @@ class HomePageAppBar extends StatelessWidget {
                 hintText: 'Search Amazon.bd',
                 prefixIcon: Icon(Icons.search, color: black),
                 suffixIcon: Icon(Icons.camera_alt_sharp, color: grey),
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: width * 0.03,
-                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: width * 0.03),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
                   borderSide: BorderSide(color: grey),
