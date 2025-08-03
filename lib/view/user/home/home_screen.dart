@@ -14,8 +14,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final CarouselSliderController todayDealsCarouselController =
+      CarouselSliderController();
 
-  final CarouselSliderController todayDealsCarouselController = CarouselSliderController();
+  headphoneDeals(int index) {
+    switch (index) {
+      case 0:
+        return 'Bose';
+      case 1:
+        return 'boat';
+      case 2:
+        return 'SOny';
+      case 3:
+        return 'OnePlus';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +60,17 @@ class _HomeScreenState extends State<HomeScreen> {
               CommonFunctions.divider(),
               HomeScreenBanner(height: height),
               CommonFunctions.divider(),
-              TodaysDealHomeScreenWidget(width: width, height: height, textTheme: textTheme, todayDealsCarouselController: todayDealsCarouselController),
+              TodaysDealHomeScreenWidget(
+                width: width,
+                height: height,
+                textTheme: textTheme,
+                todayDealsCarouselController: todayDealsCarouselController,
+              ),
               CommonFunctions.divider(),
               Container(
                 padding: EdgeInsets.symmetric(
-                  horizontal:width*0.03 ,
-                  vertical: height*0.01,
+                  horizontal: width * 0.03,
+                  vertical: height * 0.01,
                 ),
                 width: width,
                 child: Column(
@@ -60,16 +78,70 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Text(
                       'Latest launches in Headphones',
-                      style:textTheme.displaySmall!.copyWith(
+                      style: textTheme.displaySmall!.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
 
-                    CommonFunctions.blankSpace(height*0.01, 0),
+                    CommonFunctions.blankSpace(height * 0.01, 0),
+
+                    GridView.builder(
+                      // The gridDelegate defines the layout of the grid.
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2, // Sets 2 columns in the grid.
+                            crossAxisSpacing: 10.0, // Space between columns.
+                            mainAxisSpacing: 20.0, // Space between rows.
+                            childAspectRatio: 1.0,
+                          ),
+                      itemCount: 4,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {},
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    // border: Border.all(color: greyShade3),
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                        'assets/images/offersNsponcered/${headphonesDeals[index]}',
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              SizedBox(height: 5), // Optional spacing
+                              Text(
+                                headphonesDeals[index].split('.').first, // ✅ correct
+                                style: textTheme.bodyMedium,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Explore More',
+                        style: textTheme.bodySmall!.copyWith(color: blue),
+                      ),
+                    ),
 
                   ],
                 ),
               ),
+
             ],
           ),
         ),
@@ -122,15 +194,11 @@ class TodaysDealHomeScreenWidget extends StatelessWidget {
                   builder: (BuildContext context) {
                     return Container(
                       width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 5.0,
-                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
                       decoration: BoxDecoration(
                         color: Colors.amber,
                         image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/todays_deals/$i',
-                          ),
+                          image: AssetImage('assets/images/todays_deals/$i'),
                           fit: BoxFit.fitHeight,
                         ),
                       ),
@@ -151,9 +219,7 @@ class TodaysDealHomeScreenWidget extends StatelessWidget {
                     ),
                     child: Text(
                       'Upto 62% off',
-                      style: textTheme.labelMedium!.copyWith(
-                        color: white,
-                      ),
+                      style: textTheme.labelMedium!.copyWith(color: white),
                     ),
                   ),
                 ),
@@ -172,14 +238,14 @@ class TodaysDealHomeScreenWidget extends StatelessWidget {
 
             GridView.builder(
               // The gridDelegate defines the layout of the grid.
-              gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4, // Sets 2 columns in the grid.
-                    crossAxisSpacing: 10.0, // Space between columns.
-                    mainAxisSpacing: 20.0, // Space between rows.
-                    childAspectRatio: 1.0,
-                  ),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4, // Sets 2 columns in the grid.
+                crossAxisSpacing: 10.0, // Space between columns.
+                mainAxisSpacing: 20.0, // Space between rows.
+                childAspectRatio: 1.0,
+              ),
               itemCount: 4,
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return InkWell(
@@ -208,15 +274,13 @@ class TodaysDealHomeScreenWidget extends StatelessWidget {
               },
             ),
 
-            CommonFunctions.blankSpace(height*0.01, 0),
+            CommonFunctions.blankSpace(height * 0.01, 0),
 
             TextButton(
-              onPressed: (){
-
-              },
+              onPressed: () {},
               child: Text(
-                  'See all Deals',
-                  style:textTheme.bodySmall!.copyWith(color:blue),
+                'See all Deals',
+                style: textTheme.bodySmall!.copyWith(color: blue),
               ),
             ),
           ],
