@@ -78,6 +78,7 @@ flutter:
     - assets/images/
     - assets/images/categories/
     - assets/images/carousel_slideshow/
+    - assets/images/todays_deals/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

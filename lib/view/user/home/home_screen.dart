@@ -14,6 +14,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  final CarouselSliderController todayDealsCarouselController = CarouselSliderController();
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -33,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
               // Decorative top bar (optional for banners, location, etc.)
               HomeScreenUserAddressBar(height: height, width: width),
 
-              // Divider(thickness: 2, color: grey, height: 0),
               CommonFunctions.divider(),
 
               HomeScreenCategoriesList(
@@ -42,13 +44,182 @@ class _HomeScreenState extends State<HomeScreen> {
                 textTheme: textTheme,
               ),
               CommonFunctions.blankSpace(height * 0.01, 0),
-              // Divider(thickness: 3, color: greyShade3, height: 0),
               CommonFunctions.divider(),
               HomeScreenBanner(height: height),
+              CommonFunctions.divider(),
+              TodaysDealHomeScreenWidget(width: width, height: height, textTheme: textTheme, todayDealsCarouselController: todayDealsCarouselController),
+              CommonFunctions.divider(),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal:width*0.03 ,
+                  vertical: height*0.01,
+                ),
+                width: width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Latest launches in Headphones',
+                      style:textTheme.displaySmall!.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
 
+                    CommonFunctions.blankSpace(height*0.01, 0),
 
+                  ],
+                ),
+              ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class TodaysDealHomeScreenWidget extends StatelessWidget {
+  const TodaysDealHomeScreenWidget({
+    super.key,
+    required this.width,
+    required this.height,
+    required this.textTheme,
+    required this.todayDealsCarouselController,
+  });
+
+  final double width;
+  final double height;
+  final TextTheme textTheme;
+  final CarouselSliderController todayDealsCarouselController;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: width * 0.03,
+          vertical: height * 0.01,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '50%-80% off | Latest deals.',
+              style: textTheme.displaySmall!.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            CarouselSlider(
+              carouselController: todayDealsCarouselController,
+              options: CarouselOptions(
+                height: height * 0.23,
+                autoPlay: true,
+                viewportFraction: 1,
+              ),
+              items: todaysDeals.map((i) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 5.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.amber,
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/todays_deals/$i',
+                          ),
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
+            CommonFunctions.blankSpace(height * 0.01, 0),
+            Row(
+              children: [
+                Container(
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: red,
+                    ),
+                    child: Text(
+                      'Upto 62% off',
+                      style: textTheme.labelMedium!.copyWith(
+                        color: white,
+                      ),
+                    ),
+                  ),
+                ),
+                CommonFunctions.blankSpace(0, width * 0.03),
+                Text(
+                  'Deal of the Day',
+                  style: textTheme.labelMedium!.copyWith(
+                    color: red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+
+            CommonFunctions.blankSpace(height * 0.01, 0),
+
+            GridView.builder(
+              // The gridDelegate defines the layout of the grid.
+              gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4, // Sets 2 columns in the grid.
+                    crossAxisSpacing: 10.0, // Space between columns.
+                    mainAxisSpacing: 20.0, // Space between rows.
+                    childAspectRatio: 1.0,
+                  ),
+              itemCount: 4,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    log(index.toString());
+                    todayDealsCarouselController.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: greyShade3),
+                      image: DecorationImage(
+                        image: AssetImage(
+                          'assets/images/todays_deals/${todaysDeals[index]}',
+                        ),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+
+            CommonFunctions.blankSpace(height*0.01, 0),
+
+            TextButton(
+              onPressed: (){
+
+              },
+              child: Text(
+                  'See all Deals',
+                  style:textTheme.bodySmall!.copyWith(color:blue),
+              ),
+            ),
+          ],
         ),
       ),
     );
