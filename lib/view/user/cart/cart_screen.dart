@@ -157,6 +157,19 @@ class _CartScreenState extends State<CartScreen> {
                               ],
                             ),
                           ),
+                          Expanded(
+                            flex: 6,
+                            child: Column(
+                              children: [
+                                Image(
+                                  image:AssetImage(
+                                      'assets/images/todays_deals/todaysDeal0.png'
+                                  ),
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     );
