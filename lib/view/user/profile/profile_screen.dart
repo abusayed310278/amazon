@@ -76,7 +76,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           child: Column(
             children: [
-              
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: width*0.04,
+                ),
+                child: Row(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text:'Hello ',
+                            style: textTheme.bodyLarge,
+                          ),
+                          TextSpan(
+                            text:'Said',
+                            style: textTheme.bodyLarge!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const Spacer(),
+                    CircleAvatar(
+                      backgroundColor: greyShade3,
+                      radius: height*0.025,
+
+                    ),
+                  ],
+                ),
+              ),
+
+              GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                ),
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context,index){
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: greyShade2,
+
+                      border: Border.all(
+                        color: grey,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
