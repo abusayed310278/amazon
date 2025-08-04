@@ -74,10 +74,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: EdgeInsets.symmetric(
             vertical: height*0.02,
           ),
-          child: Column(
-            children: [
-              
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text:'Hello, ',
+                        style:textTheme.bodyLarge,
+                      ),
+                      TextSpan(
+                        text:'Said',
+                        style:textTheme.bodyLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                    ],
+                  ),
+                ),
+
+                const Spacer(),
+
+                CircleAvatar(
+                  backgroundColor: greyShade3,
+                  radius: height*0.025,
+
+                ),
+              ],
+            ),
           ),
         ),
       
