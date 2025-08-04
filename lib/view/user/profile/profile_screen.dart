@@ -69,45 +69,107 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
       
         ),
-        body:Container(
+        body: Container(
           width: width,
           padding: EdgeInsets.symmetric(
-            vertical: height*0.02,
+            vertical: height * 0.01,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text:'Hello, ',
-                        style:textTheme.bodyLarge,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.02),
+                child: Row(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Hello, ',
+                            style: textTheme.bodyLarge,
+                          ),
+                          TextSpan(
+                            text: 'Said',
+                            style: textTheme.bodyLarge!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                      TextSpan(
-                        text:'Said',
-                        style:textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    ),
+                    const Spacer(),
+                    CircleAvatar(
+                      backgroundColor: greyShade3,
+                      radius: height * 0.025,
+                    ),
+                  ],
+                ),
+              ),
 
-                    ],
+              SizedBox(height: height * 0.02),
+
+              // Expanded to allow GridView to scroll inside Column
+              Expanded(
+                child: GridView.builder(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: width*0.04,
                   ),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 3.1,
+                  ),
+                  itemCount: 4, // example count
+
+                  itemBuilder: (context, index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color:grey,
+                        ),
+
+                        color: greyShade2,
+                        borderRadius: BorderRadius.circular(50),
+
+                      ),
+                      child: Builder(
+                        builder: (context){
+                          if(index==0){
+                            return Text(
+                              'Your Orders',
+                              style: textTheme.bodyMedium,
+                            );
+                          }
+                          if(index==1){
+                            return Text(
+                              'Buy again',
+                              style: textTheme.bodyMedium,
+                            );
+                          }
+                          if(index==2){
+                            return Text(
+                              'Your Account',
+                              style: textTheme.bodyMedium,
+                            );
+                          }
+                            return Text(
+                              'Your Wish List',
+                              style: textTheme.bodyMedium,
+                            );
+                        },
+                      ),
+                    );
+                  },
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                 ),
-
-                const Spacer(),
-
-                CircleAvatar(
-                  backgroundColor: greyShade3,
-                  radius: height*0.025,
-
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-      
+
+
       ),
     );
   }
