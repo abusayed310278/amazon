@@ -14,6 +14,8 @@ class SignInLogic extends StatefulWidget {
 class _SignInLogicState extends State<SignInLogic> {
 
 
+
+
   checkAuthentication() {
     bool userIsAuthenticated = AuthServices.checkAuthentication();
 
