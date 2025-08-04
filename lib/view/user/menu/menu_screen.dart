@@ -1,3 +1,6 @@
+import 'package:amazon/constants/common_functions.dart';
+import 'package:amazon/view/auth_screens.dart';
+import 'package:amazon/view/user/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/colors.dart';
@@ -16,40 +19,96 @@ class _MenuScreenState extends State<MenuScreen> {
     final width = MediaQuery.of(context).size.width;
     final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      backgroundColor: white,
-      appBar: PreferredSize(
-        preferredSize: Size(width*1,height*1),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: appBarGradientColor,
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size(width * 1, height * 0.1),
+          child: HomePageAppBar(width: width, height: height),
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            // height: height,
+            width: width,
+            padding: EdgeInsets.symmetric(
+              horizontal: width * 0.03,
+              vertical: height * 0.02,
+            ),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: appBarGradientColor,
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
+            ),
+            child: Column(
+              children: [
+                GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 0.7,
+                  ),
+                  shrinkWrap: true,
+                  physics: const PageScrollPhysics(),
+                  itemCount: 18,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/menu_pics/$index.png',
+                          ),
+                          fit: BoxFit.fill,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: greyShade3),
+                      ),
+                    );
+                  },
+                ),
+
+                CommonFunctions.blankSpace(height * 0.02, 0),
+
+                ListView.builder(
+                  itemCount: 2,
+                  shrinkWrap: true,
+                  physics: const PageScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      height: height * 0.06,
+                      width: width,
+                      margin: EdgeInsets.symmetric(
+                        vertical: height*0.005,
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: height*0.005,
+                        horizontal: width*0.03,
+                      ),
+                      decoration: BoxDecoration(
+                        color: white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: teal),
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            index==0?'Settings':'Customer Services',
+                            style: textTheme.bodyMedium,
+                          ),
+                          const Spacer(),
+                          Icon(Icons.chevron_right,color: black,),
+                          
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
           ),
         ),
-
       ),
-      body:SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: height*0.06,
-              width: width,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: addressBarGradientColor,
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-              ),
-            ),
-
-          ],
-        ),
-      ),
-
     );
   }
 }

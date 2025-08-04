@@ -80,6 +80,7 @@ flutter:
     - assets/images/carousel_slideshow/
     - assets/images/todays_deals/
     - assets/images/offersNsponcered/
+    - assets/images/menu_pics/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
