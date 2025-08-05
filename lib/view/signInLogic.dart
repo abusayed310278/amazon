@@ -5,6 +5,7 @@ import 'package:amazon/view/user/user_persistant_nav_bar/user_persistant_nav_bar
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
+
 class SignInLogic extends StatefulWidget {
   const SignInLogic({super.key});
 
@@ -25,7 +26,7 @@ class _SignInLogicState extends State<SignInLogic> {
     Navigator.pushAndRemoveUntil(
         context,
         PageTransition(
-            child: const UserBottomNavBar(),
+            child:  UserBottomNavBar(),
             type: PageTransitionType.rightToLeft),
             (route) => false)
         :

@@ -4,86 +4,138 @@ import 'package:amazon/view/user/menu/menu_screen.dart';
 import 'package:amazon/view/user/profile/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+// import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+// import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+// import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+
 import '../../../utils/colors.dart';
 
-class UserBottomNavBar extends StatefulWidget {
-  const UserBottomNavBar({super.key});
+// class UserBottomNavBar extends StatefulWidget {
+//   const UserBottomNavBar({super.key});
+//
+//   @override
+//   State<UserBottomNavBar> createState() => _UserBottomNavBarState();
+// }
+//
+// class _UserBottomNavBarState extends State<UserBottomNavBar> {
+//   PersistentTabController controller = PersistentTabController(initialIndex: 0);
+//
+//   List<Widget> _buildScreens() {
+//     return [
+//       const HomeScreen(),
+//       const ProfileScreen(),
+//       const CartScreen(),
+//       const MenuScreen()
+//     ];
+//   }
+//
+//   List<PersistentBottomNavBarItem> _navBarsItems() {
+//     return [
+//       PersistentBottomNavBarItem(
+//         icon: const Icon(CupertinoIcons.home),
+//         title: "Home",
+//         activeColorPrimary: teal,
+//         inactiveColorPrimary: black,
+//       ),
+//       PersistentBottomNavBarItem(
+//         icon: const Icon(CupertinoIcons.person),
+//         title: "You",
+//         activeColorPrimary: teal,
+//         inactiveColorPrimary: black,
+//       ),
+//       PersistentBottomNavBarItem(
+//         icon: const Icon(CupertinoIcons.cart),
+//         title: "Cart",
+//         activeColorPrimary: teal,
+//         inactiveColorPrimary: black,
+//       ),
+//       PersistentBottomNavBarItem(
+//         icon: const Icon(Icons.menu),
+//         title: "Menu",
+//         activeColorPrimary: teal,
+//         inactiveColorPrimary: black,
+//       ),
+//     ];
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return PersistentTabView(
+//       context,
+//       controller: controller,
+//       screens: _buildScreens(),
+//       items: _navBarsItems(),
+//       confineInSafeArea: true,
+//       backgroundColor: Colors.white,
+//       handleAndroidBackButtonPress: true,
+//       resizeToAvoidBottomInset: true,
+//       stateManagement: true,
+//       hideNavigationBarWhenKeyboardShows: true,
+//       decoration: NavBarDecoration(
+//         borderRadius: BorderRadius.circular(10.0),
+//         colorBehindNavBar: Colors.white,
+//       ),
+//       popAllScreensOnTapOfSelectedTab: true,
+//       popActionScreens: PopActionScreensType.all,
+//       itemAnimationProperties: const ItemAnimationProperties(
+//         duration: Duration(milliseconds: 200),
+//         curve: Curves.ease,
+//       ),
+//       screenTransitionAnimation: const ScreenTransitionAnimation(
+//         animateTabTransition: true,
+//         curve: Curves.ease,
+//         duration: Duration(milliseconds: 200),
+//       ),
+//       navBarStyle: NavBarStyle.style3,
+//     );
+//   }
+// }
 
-  @override
-  State<UserBottomNavBar> createState() => _UserBottomNavBarState();
-}
+import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
-class _UserBottomNavBarState extends State<UserBottomNavBar> {
-  PersistentTabController controller = PersistentTabController(initialIndex: 0);
+void main() => runApp(UserBottomNavBar());
 
-  List<Widget> _buildScreens() {
-    return [
-      const HomeScreen(),
-      const ProfileScreen(),
-      const CartScreen(),
-      const MenuScreen()
-    ];
-  }
-
-  List<PersistentBottomNavBarItem> _navBarsItems() {
-    return [
-      PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.home),
-        title: "Home",
-        activeColorPrimary: teal,
-        inactiveColorPrimary: black,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.person),
-        title: "You",
-        activeColorPrimary: teal,
-        inactiveColorPrimary: black,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.cart),
-        title: "Cart",
-        activeColorPrimary: teal,
-        inactiveColorPrimary: black,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.menu),
-        title: "Menu",
-        activeColorPrimary: teal,
-        inactiveColorPrimary: black,
-      ),
-    ];
-  }
-
+class UserBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      context,
-      controller: controller,
-      screens: _buildScreens(),
-      items: _navBarsItems(),
-      confineInSafeArea: true,
-      backgroundColor: Colors.white,
-      handleAndroidBackButtonPress: true,
-      resizeToAvoidBottomInset: true,
-      stateManagement: true,
-      hideNavigationBarWhenKeyboardShows: true,
-      decoration: NavBarDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        colorBehindNavBar: Colors.white,
+    return MaterialApp(
+      title: 'Persistent Bottom Navigation Bar Demo',
+      home: PersistentTabView(
+        tabs: [
+          PersistentTabConfig(
+            screen: HomeScreen(),
+            item: ItemConfig(
+              icon: Icon(Icons.home),
+              title: "Home",
+            ),
+          ),
+          PersistentTabConfig(
+            screen: ProfileScreen(),
+            item: ItemConfig(
+              icon: Icon(Icons.person),
+              title: "You",
+            ),
+          ),
+          PersistentTabConfig(
+            screen: CartScreen(),
+            item: ItemConfig(
+              icon: Icon(Icons.shopping_cart),
+              title: "Cart",
+            ),
+          ),
+          PersistentTabConfig(
+            screen: MenuScreen(),
+            item: ItemConfig(
+              icon: Icon(Icons.menu),
+              title: "Menu",
+            ),
+          ),
+        ],
+        navBarBuilder: (navBarConfig) => Style1BottomNavBar(
+          navBarConfig: navBarConfig,
+        ),
       ),
-      popAllScreensOnTapOfSelectedTab: true,
-      popActionScreens: PopActionScreensType.all,
-      itemAnimationProperties: const ItemAnimationProperties(
-        duration: Duration(milliseconds: 200),
-        curve: Curves.ease,
-      ),
-      screenTransitionAnimation: const ScreenTransitionAnimation(
-        animateTabTransition: true,
-        curve: Curves.ease,
-        duration: Duration(milliseconds: 200),
-      ),
-      navBarStyle: NavBarStyle.style3,
     );
   }
 }
