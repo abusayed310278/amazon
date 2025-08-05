@@ -44,7 +44,8 @@ class Amazon extends StatelessWidget {
           //   mobileNumber: '+91101010101010',
           // ),
           // home:const AuthScreen(),
-          home: const UserDataInputScreen(),
+          // home: const UserDataInputScreen(),
+          home: const SignInLogic(),
           debugShowCheckedModeBanner: true,
       ),
     );
