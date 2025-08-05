@@ -21,7 +21,21 @@ class UserDataCRUD{
     }catch(e){
 
       log(e.toString());
+      CommonFunctions.showToast(context: context, message: e.toString());
 
+
+    }
+  }
+
+  static Future checkUser()async{
+    try{
+      await firestore
+          .collection('users')
+          .where('mobileNum',isEqualTo: auth.currentUser!.phoneNumber)
+          .get()
+          .then((value)=>value.size>0?true:false);
+    }catch(e){
+      log(e.toString());
     }
   }
 
