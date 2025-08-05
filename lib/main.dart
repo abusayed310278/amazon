@@ -1,3 +1,4 @@
+
 import 'package:amazon/controller/provider/auth_provider.dart';
 import 'package:amazon/firebase_options.dart';
 import 'package:amazon/utils/theme.dart';
@@ -41,7 +42,7 @@ class Amazon extends StatelessWidget {
           // home:OTPScreen(
           //   mobileNumber: '+91101010101010',
           // ),
-          home:const MenuScreen(),
+          home:const CartScreen(),
           debugShowCheckedModeBanner: true,
       ),
     );
