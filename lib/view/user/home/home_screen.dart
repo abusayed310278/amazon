@@ -616,7 +616,7 @@ class HomeScreenUserAddressBar extends StatelessWidget {
       ),
       child:
       Consumer<AddressProvider>(builder: (context, addressProvider, child) {
-        if (addressProvider.fetchedCurrentSelectedAddress==true) {
+        if (addressProvider.fetchedCurrentSelectedAddress && addressProvider.addressPresent) {
           AddressModel selectedAddress = addressProvider.currentSelectedAddress;
           return Row(
             mainAxisAlignment: MainAxisAlignment.start,
