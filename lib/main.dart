@@ -5,6 +5,7 @@ import 'package:amazon/utils/theme.dart';
 import 'package:amazon/view/auth_screens.dart';
 import 'package:amazon/view/otp_screen.dart';
 import 'package:amazon/view/signInLogic.dart';
+import 'package:amazon/view/user/address_screen/address_screen.dart';
 import 'package:amazon/view/user/cart/cart_screen.dart';
 import 'package:amazon/view/user/home/home_screen.dart';
 import 'package:amazon/view/user/menu/menu_screen.dart';
@@ -46,6 +47,7 @@ class Amazon extends StatelessWidget {
           // home:const AuthScreen(),
           // home: const UserDataInputScreen(),
           home: const SignInLogic(),
+          // home: const AddressScreen(),
           debugShowCheckedModeBanner: true,
       ),
     );

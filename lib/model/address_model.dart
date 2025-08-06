@@ -8,7 +8,9 @@ class AddressModel{
   String? pincode;
   String? town;
   String? state;
+  String? docID;
   bool? isDefault;
+  String? authenticatedMobileNumber;
 
   AddressModel({
     this.name,
@@ -19,7 +21,9 @@ class AddressModel{
     this.pincode,
     this.town,
     this.state,
+    this.docID,
     this.isDefault,
+    this.authenticatedMobileNumber
   });
 
   // Serialize: Convert AddressModel to JSON
@@ -33,6 +37,7 @@ class AddressModel{
       'pincode': pincode,
       'town': town,
       'state': state,
+      'docID': docID,
       'isDefault': isDefault,
     };
   }
@@ -48,7 +53,9 @@ class AddressModel{
       pincode: json['pincode'],
       town: json['town'],
       state: json['state'],
+      docID: json['docID'],
       isDefault: json['isDefault'],
+      authenticatedMobileNumber: json['authenticatedMobileNumber'],
     );
   }
 
