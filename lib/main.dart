@@ -15,6 +15,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'controller/provider/address_provider.dart';
 import 'firebase_options.dart';
 
 Future main()async {
@@ -37,6 +38,7 @@ class Amazon extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+        ChangeNotifierProvider<AddressProvider>(create: (_) => AddressProvider()),
 
       ],
       child: MaterialApp(

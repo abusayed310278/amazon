@@ -1,9 +1,12 @@
 import 'dart:developer';
 import 'package:amazon/constants/common_functions.dart';
 import 'package:amazon/constants/constants.dart';
+import 'package:amazon/controller/provider/address_provider.dart';
 import 'package:amazon/controller/services/user_data_crud_services/user_data_CRUD_services.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
+import '../../../model/address_model.dart';
 import '../../../utils/colors.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -152,6 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       checkUserAddress();
+      context.read<AddressProvider>().getCurrentSelectedAddress();
     });
   }
 
@@ -598,6 +602,8 @@ class HomeScreenUserAddressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       height: height * 0.06,
       width: width,
@@ -608,6 +614,45 @@ class HomeScreenUserAddressBar extends StatelessWidget {
           end: Alignment.centerRight,
         ),
       ),
+      child:
+      Consumer<AddressProvider>(builder: (context, addressProvider, child) {
+        if (addressProvider.fetchedCurrentSelectedAddress==true) {
+          AddressModel selectedAddress = addressProvider.currentSelectedAddress;
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.location_pin,
+                color: black,
+              ),
+              CommonFunctions.blankSpace(
+                0,
+                width * 0.02,
+              ),
+              Text(
+                'Deliver to ${selectedAddress.name} - ${selectedAddress.town}, ${selectedAddress.state}',
+                style: textTheme.bodySmall,
+              )
+            ],
+          );
+        } else {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.location_pin,
+                color: black,
+              ),
+              CommonFunctions.blankSpace(
+                0,
+                width * 0.02,
+              ),
+              Text('Deliver to user - City, State', style: textTheme.bodySmall)
+            ],
+          );
+        }
+      }),
+
     );
   }
 }
