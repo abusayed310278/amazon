@@ -4,6 +4,8 @@ import 'package:amazon/firebase_options.dart';
 import 'package:amazon/utils/theme.dart';
 import 'package:amazon/view/auth_screens.dart';
 import 'package:amazon/view/otp_screen.dart';
+import 'package:amazon/view/seller/add_product_screen/add_products_screen.dart';
+import 'package:amazon/view/seller/seller_persistant_nav_bar/seller_persistant_nav_bar.dart';
 import 'package:amazon/view/signInLogic.dart';
 import 'package:amazon/view/user/address_screen/address_screen.dart';
 import 'package:amazon/view/user/cart/cart_screen.dart';
@@ -16,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'controller/provider/address_provider.dart';
+import 'controller/provider/product_provider/product_provider.dart';
 import 'firebase_options.dart';
 
 Future main()async {
@@ -39,6 +42,7 @@ class Amazon extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
         ChangeNotifierProvider<AddressProvider>(create: (_) => AddressProvider()),
+        ChangeNotifierProvider<ProductProvider>(create: (_) => ProductProvider()),
 
       ],
       child: MaterialApp(
@@ -48,8 +52,10 @@ class Amazon extends StatelessWidget {
           // ),
           // home:const AuthScreen(),
           // home: const UserDataInputScreen(),
-          home: const SignInLogic(),
+          // home: const SignInLogic(),
           // home: const AddressScreen(),
+          // home:  SellerBottomNavBar(),
+          home:  AddProductsScreen(),
           debugShowCheckedModeBanner: true,
       ),
     );

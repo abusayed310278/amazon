@@ -51,7 +51,7 @@ class ProductServices{
     });
 
     context
-        .read<SellerProductProvider>()
+        .read<ProductProvider>()
         .updateProductImagesURL(imageURLs: imagesURL);
   }
 
@@ -66,7 +66,7 @@ class ProductServices{
           .set(productModel.toMap())
           .whenComplete(() {
         log('Data Added');
-        context.read<SellerProductProvider>().fecthSellerProducts();
+        context.read<ProductProvider>().fecthSellerProducts();
         Navigator.pop(context);
 
         CommonFunctions.showToast(
