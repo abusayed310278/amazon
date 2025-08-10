@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../constants/constants.dart';
+import '../../../model/product_model.dart';
 import '../../provider/product_provider/product_provider.dart';
 
 class ProductServices{
@@ -50,9 +51,9 @@ class ProductServices{
       imagesURL.add(imageURL);
     });
 
-    context
-        .read<ProductProvider>()
-        .updateProductImagesURL(imageURLs: imagesURL);
+    // context
+    //     .read<ProductProvider>()
+    //     .updateProductImagesURL(imageURLs: imagesURL);
   }
 
   static Future addProduct({
@@ -66,7 +67,8 @@ class ProductServices{
           .set(productModel.toMap())
           .whenComplete(() {
         log('Data Added');
-        context.read<ProductProvider>().fecthSellerProducts();
+
+         // context.read<ProductProvider>().fecthSellerProducts();
         Navigator.pop(context);
 
         CommonFunctions.showToast(

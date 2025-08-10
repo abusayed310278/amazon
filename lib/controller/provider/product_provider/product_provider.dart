@@ -8,7 +8,7 @@ class ProductProvider extends ChangeNotifier{
 
   List<File>productImages=[];
   List<String>productImagesURL=[];
-  bool sellerProductsFetched=false;
+  // bool sellerProductsFetched=false;
 
   fetchProductImagesFromGallery({required BuildContext context})async{
     productImages=await ProductServices.getImages(context: context);
