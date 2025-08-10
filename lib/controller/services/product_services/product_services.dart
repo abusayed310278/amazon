@@ -10,8 +10,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
+
+
 import '../../../constants/constants.dart';
-import '../../../model/product_model.dart';
+import 'package:amazon/model/product_model.dart';
 import '../../provider/product_provider/product_provider.dart';
 
 class ProductServices{
@@ -28,8 +30,7 @@ class ProductServices{
         selectedImages.add(File(filePick[i].path));
       }
     } else {
-      CommonFunctions.showToast(
-          context: context, message: 'No Image Selected');
+      CommonFunctions.showToast(context: context, message: 'No Image Selected');
     }
     log('The Images are \n${selectedImages.toList().toString()}');
     return selectedImages;
@@ -51,9 +52,9 @@ class ProductServices{
       imagesURL.add(imageURL);
     });
 
-    // context
-    //     .read<ProductProvider>()
-    //     .updateProductImagesURL(imageURLs: imagesURL);
+    log(imagesURL.toList().toString());
+    return imagesURL;
+
   }
 
   static Future addProduct({
@@ -66,13 +67,14 @@ class ProductServices{
           .doc(productModel.productID)
           .set(productModel.toMap())
           .whenComplete(() {
+
         log('Data Added');
 
-         // context.read<ProductProvider>().fecthSellerProducts();
+
         Navigator.pop(context);
 
-        CommonFunctions.showToast(
-            context: context, message: 'Product Added Successful');
+        CommonFunctions.showToast(context: context, message: 'Product Added Successful');
+
       });
     } catch (e) {
       log(e.toString());

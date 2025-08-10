@@ -52,10 +52,9 @@ class Amazon extends StatelessWidget {
           // ),
           // home:const AuthScreen(),
           // home: const UserDataInputScreen(),
-          // home: const SignInLogic(),
+          home: const SignInLogic(),
           // home: const AddressScreen(),
           // home:  SellerBottomNavBar(),
-          home:  AddProductsScreen(),
           debugShowCheckedModeBanner: true,
       ),
     );
