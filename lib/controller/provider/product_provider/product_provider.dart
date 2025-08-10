@@ -19,13 +19,12 @@ class SellerProductProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  // uploadProductImagesToFirebaseStorage({required BuildContext context})async{
-  //   productImagesURL=await ProductServices.uploadImageToFirebaseStorage(
-  //       images: productImages,
-  //       context: context,
-  //   );
-  //   notifyListeners();
-  // }
+  updateProductImagesURL({required List<String> imageURLs}) async {
+    productImagesURL = imageURLs;
+    notifyListeners();
+  }
+
+
 
   Future<void> pickAndUploadImages(BuildContext context) async {
     final ImagePicker picker = ImagePicker();

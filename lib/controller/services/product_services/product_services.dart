@@ -34,26 +34,7 @@ class ProductServices {
     return selectedImages;
   }
 
-  // static uploadImageToFirebaseStorage({
-  //   required List<File> images,
-  //   required BuildContext context,
-  // }) async {
-  //   List<String> imagesURL = [];
-  //   String sellerUID = auth.currentUser!.phoneNumber!;
-  //   Uuid uuid = const Uuid();
-  //
-  //   await Future.forEach(images, (image) async {
-  //     String imageName = '$sellerUID${uuid.v1().toString()}';
-  //     Reference ref = storage.ref().child('Product_Images').child(imageName);
-  //     await ref.putFile(File(image.path));
-  //     String imageURL = await ref.getDownloadURL();
-  //     imagesURL.add(imageURL);
-  //   });
-  //
-  //   log(imagesURL.toList().toString());
-  //   return imagesURL;
-  //
-  // }
+
 
   static const String cloudName = "dg32lbfu5";
   static const String uploadPreset = "amazon";
@@ -95,6 +76,11 @@ class ProductServices {
     }
 
     log(uploadedUrls.toString());
+    // return uploadedUrls;
+    context
+        .read<SellerProductProvider>()
+        .updateProductImagesURL(imageURLs: uploadedUrls);
+
     return uploadedUrls;
   }
 
@@ -109,6 +95,7 @@ class ProductServices {
           .set(productModel.toMap())
           .whenComplete(() {
             log('Data Added');
+            context.read<SellerProductProvider>().fecthSellerProducts();
 
             Navigator.pop(context);
 

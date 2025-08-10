@@ -198,11 +198,11 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        '₹ ${currentModel.discountedPrice.toString()}',
+                                        '\$ ${currentModel.discountedPrice.toString()}',
                                         style: textTheme.bodyMedium,
                                       ),
                                       Text(
-                                        '₹ ${currentModel.price.toString()}',
+                                        '\$ ${currentModel.price.toString()}',
                                         style: textTheme.labelMedium!.copyWith(
                                           color: grey,
                                           decoration:
