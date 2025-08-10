@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:amazon/controller/services/auth_services/auth_services.dart';
 import 'package:amazon/controller/services/user_data_crud_services/user_data_CRUD_services.dart';
 import 'package:amazon/view/auth_screens.dart';
+import 'package:amazon/view/seller/seller_persistant_nav_bar/seller_persistant_nav_bar.dart';
 import 'package:amazon/view/user/home/home_screen.dart';
 import 'package:amazon/view/user/user_data_screen/user_data_input_screen.dart';
 import 'package:amazon/view/user/user_persistant_nav_bar/user_persistant_nav_bar.dart';
@@ -17,7 +18,6 @@ class SignInLogic extends StatefulWidget {
 }
 
 class _SignInLogicState extends State<SignInLogic> {
-
   checkUser() async {
     bool userAlreadyThere = await UserDataCRUD.checkUser();
 
@@ -32,25 +32,29 @@ class _SignInLogicState extends State<SignInLogic> {
 
     log(userAlreadyThere.toString());
 
-    if (userAlreadyThere==true) {
-      Navigator.push(
-        context,
-        PageTransition(
-          child: UserBottomNavBar(),
-          type: PageTransitionType.rightToLeft,
-        ),
-      );
-    }else{
-      Navigator.push(
-        context,
-        PageTransition(
-          child: const UserDataInputScreen(),
-          type: PageTransitionType.rightToLeft,
-        ),
-      );
+    if (userAlreadyThere == true) {
+      bool userIsSeller = await UserDataCRUD.userIsSeller();
+      log('start');
+      log(userIsSeller.toString());
+
+      if (userIsSeller) {
+        Navigator.push(
+          context,
+          PageTransition(
+            child: SellerBottomNavBar(),
+            type: PageTransitionType.rightToLeft,
+          ),
+        );
+      } else {
+        Navigator.push(
+          context,
+          PageTransition(
+            child: UserBottomNavBar(),
+            type: PageTransitionType.rightToLeft,
+          ),
+        );
+      }
     }
-
-
   }
 
   checkAuthentication() {

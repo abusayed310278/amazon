@@ -43,7 +43,7 @@ class Amazon extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
         ChangeNotifierProvider<AddressProvider>(create: (_) => AddressProvider()),
-        ChangeNotifierProvider<ProductProvider>(create: (_) => ProductProvider()),
+        ChangeNotifierProvider<SellerProductProvider>(create: (_) => SellerProductProvider()),
 
       ],
       child: MaterialApp(

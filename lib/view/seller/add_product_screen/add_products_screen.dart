@@ -46,16 +46,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   onPressed() async {
-    if (context.read<ProductProvider>().productImages.isNotEmpty) {
+    if (context.read<SellerProductProvider>().productImages.isNotEmpty) {
       setState(() {
         addProductBtnPressed = true;
       });
       await ProductServices.uploadImageToFirebaseStorage(
-        images: context.read<ProductProvider>().productImages,
+        images: context.read<SellerProductProvider>().productImages,
         context: context,
       );
       List<String> imagesURLs = context
-          .read<ProductProvider>()
+          .read<SellerProductProvider>()
           .productImagesURL;
       Uuid uuid = const Uuid();
       String sellerID = auth.currentUser!.phoneNumber!;
@@ -314,14 +314,14 @@ class ProductImageBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProductProvider>(
+    return Consumer<SellerProductProvider>(
       builder: (context, productProvider, child) {
         return Builder(
           builder: (context) {
             if (productProvider.productImages.isEmpty) {
               return InkWell(
                 onTap: () {
-                  context.read<ProductProvider>().fetchProductImagesFromGallery(
+                  context.read<SellerProductProvider>().fetchProductImagesFromGallery(
                     context: context,
                   );
                 },
@@ -347,7 +347,7 @@ class ProductImageBanner extends StatelessWidget {
                 ),
               );
             } else {
-              List<File> images = context.read<ProductProvider>().productImages;
+              List<File> images = context.read<SellerProductProvider>().productImages;
               return Container(
                 height: height * 0.23,
                 width: width,

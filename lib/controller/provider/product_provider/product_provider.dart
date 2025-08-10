@@ -5,11 +5,14 @@ import 'package:amazon/controller/services/product_services/product_services.dar
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ProductProvider extends ChangeNotifier{
+import '../../../model/product_model.dart';
+
+class SellerProductProvider extends ChangeNotifier{
 
   List<File>productImages=[];
   List<String>productImagesURL=[];
-  // bool sellerProductsFetched=false;
+  List<ProductModel> products = [];
+  bool sellerProductsFetched = false;
 
   fetchProductImagesFromGallery({required BuildContext context})async{
     productImages=await ProductServices.getImages(context: context);
@@ -40,6 +43,12 @@ class ProductProvider extends ChangeNotifier{
     }
   }
 
+
+  fecthSellerProducts() async {
+    products = await ProductServices.getSellersProducts();
+    sellerProductsFetched = true;
+    notifyListeners();
+  }
 
 
 

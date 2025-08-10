@@ -1,10 +1,9 @@
-
-
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:amazon/constants/common_functions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,19 +12,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-
-
 import '../../../constants/constants.dart';
 import 'package:amazon/model/product_model.dart';
 import '../../provider/product_provider/product_provider.dart';
 
-class ProductServices{
+class ProductServices {
 
   static Future getImages({required BuildContext context}) async {
     List<File> selectedImages = [];
-    final pickedFile = await picker.pickMultiImage(
-      imageQuality: 100,
-    );
+    final pickedFile = await picker.pickMultiImage(imageQuality: 100);
     List<XFile> filePick = pickedFile;
 
     if (filePick.isNotEmpty) {
@@ -72,7 +67,8 @@ class ProductServices{
 
     for (File image in images) {
       try {
-        String uploadUrl = "https://api.cloudinary.com/v1_1/$cloudName/image/upload";
+        String uploadUrl =
+            "https://api.cloudinary.com/v1_1/$cloudName/image/upload";
 
         var request = http.MultipartRequest("POST", Uri.parse(uploadUrl))
           ..fields['upload_preset'] = uploadPreset
@@ -92,9 +88,9 @@ class ProductServices{
         }
       } catch (e) {
         log("Error uploading image: $e");
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error uploading image: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error uploading image: $e')));
       }
     }
 
@@ -112,20 +108,40 @@ class ProductServices{
           .doc(productModel.productID)
           .set(productModel.toMap())
           .whenComplete(() {
+            log('Data Added');
 
-        log('Data Added');
+            Navigator.pop(context);
 
-
-        Navigator.pop(context);
-
-        CommonFunctions.showToast(context: context, message: 'Product Added Successful');
-
-      });
+            CommonFunctions.showToast(
+              context: context,
+              message: 'Product Added Successful',
+            );
+          });
     } catch (e) {
       log(e.toString());
       CommonFunctions.showToast(context: context, message: e.toString());
     }
   }
 
+  static Future<List<ProductModel>> getSellersProducts() async {
+    List<ProductModel> sellersProducts = [];
 
+    try {
+      final QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
+          .collection('Products')
+          .orderBy('uploadedAt', descending: true)
+          .where('productSellerID', isEqualTo: auth.currentUser!.phoneNumber)
+          .get();
+
+      snapshot.docs.forEach((element) {
+        sellersProducts.add(ProductModel.fromMap(element.data()));
+      });
+      log(sellersProducts.toList().toString());
+    } catch (e) {
+      log('error Found');
+      log(e.toString());
+    }
+    log(sellersProducts.toList().toString());
+    return sellersProducts;
+  }
 }
