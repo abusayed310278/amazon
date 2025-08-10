@@ -117,8 +117,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     shrinkWrap: true,
                     physics: const PageScrollPhysics(),
                     itemBuilder: (context, index) {
-                      ProductModel currentModel =
-                          sellerProductProvider.products[index];
+                      ProductModel currentModel = sellerProductProvider.products[index];
 
                       return Container(
                         height: height * 0.3,
