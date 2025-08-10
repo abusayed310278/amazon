@@ -1,11 +1,14 @@
 
 
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:amazon/constants/common_functions.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -36,25 +39,67 @@ class ProductServices{
     return selectedImages;
   }
 
-  static uploadImageToFirebaseStorage({
+  // static uploadImageToFirebaseStorage({
+  //   required List<File> images,
+  //   required BuildContext context,
+  // }) async {
+  //   List<String> imagesURL = [];
+  //   String sellerUID = auth.currentUser!.phoneNumber!;
+  //   Uuid uuid = const Uuid();
+  //
+  //   await Future.forEach(images, (image) async {
+  //     String imageName = '$sellerUID${uuid.v1().toString()}';
+  //     Reference ref = storage.ref().child('Product_Images').child(imageName);
+  //     await ref.putFile(File(image.path));
+  //     String imageURL = await ref.getDownloadURL();
+  //     imagesURL.add(imageURL);
+  //   });
+  //
+  //   log(imagesURL.toList().toString());
+  //   return imagesURL;
+  //
+  // }
+
+  static const String cloudName = "dg32lbfu5";
+  static const String uploadPreset = "amazon";
+
+  /// Upload multiple images to Cloudinary
+  static Future<List<String>> uploadImageToFirebaseStorage({
     required List<File> images,
     required BuildContext context,
   }) async {
-    List<String> imagesURL = [];
-    String sellerUID = auth.currentUser!.phoneNumber!;
-    Uuid uuid = const Uuid();
+    List<String> uploadedUrls = [];
 
-    await Future.forEach(images, (image) async {
-      String imageName = '$sellerUID${uuid.v1().toString()}';
-      Reference ref = storage.ref().child('Product_Images').child(imageName);
-      await ref.putFile(File(image.path));
-      String imageURL = await ref.getDownloadURL();
-      imagesURL.add(imageURL);
-    });
+    for (File image in images) {
+      try {
+        String uploadUrl = "https://api.cloudinary.com/v1_1/$cloudName/image/upload";
 
-    log(imagesURL.toList().toString());
-    return imagesURL;
+        var request = http.MultipartRequest("POST", Uri.parse(uploadUrl))
+          ..fields['upload_preset'] = uploadPreset
+          ..files.add(await http.MultipartFile.fromPath('file', image.path));
 
+        var response = await request.send();
+
+        if (response.statusCode == 200) {
+          var responseData = await http.Response.fromStream(response);
+          var jsonData = json.decode(responseData.body);
+          uploadedUrls.add(jsonData['secure_url']);
+        } else {
+          log("Upload failed: ${response.statusCode}");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to upload image: ${image.path}')),
+          );
+        }
+      } catch (e) {
+        log("Error uploading image: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error uploading image: $e')),
+        );
+      }
+    }
+
+    log(uploadedUrls.toString());
+    return uploadedUrls;
   }
 
   static Future addProduct({

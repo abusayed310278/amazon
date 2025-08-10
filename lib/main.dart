@@ -5,6 +5,7 @@ import 'package:amazon/utils/theme.dart';
 import 'package:amazon/view/auth_screens.dart';
 import 'package:amazon/view/otp_screen.dart';
 import 'package:amazon/view/seller/add_product_screen/add_products_screen.dart';
+import 'package:amazon/view/seller/inventory/inventory_screen.dart';
 import 'package:amazon/view/seller/seller_persistant_nav_bar/seller_persistant_nav_bar.dart';
 import 'package:amazon/view/signInLogic.dart';
 import 'package:amazon/view/user/address_screen/address_screen.dart';
@@ -52,9 +53,12 @@ class Amazon extends StatelessWidget {
           // ),
           // home:const AuthScreen(),
           // home: const UserDataInputScreen(),
-          home: const SignInLogic(),
+          // home: const InventoryScreen(),
           // home: const AddressScreen(),
           // home:  SellerBottomNavBar(),
+          // home:  InventoryScreen(),
+          home:  SignInLogic(),
+          // home:  AddProductScreen(),
           debugShowCheckedModeBanner: true,
       ),
     );

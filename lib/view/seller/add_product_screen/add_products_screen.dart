@@ -38,7 +38,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ProductProvider>().emptyProductImagesList();
+
       setState(() {
         addProductBtnPressed = false;
       });
