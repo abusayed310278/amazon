@@ -43,7 +43,6 @@ class Amazon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    ProductModel productModel = ProductModel();
 
     return MultiProvider(
       providers: [
@@ -64,11 +63,11 @@ class Amazon extends StatelessWidget {
           // home: const AddressScreen(),
           // home:  SellerBottomNavBar(),
           // home:  InventoryScreen(),
-          home:  const SignInLogic(),
+          // home:   SignInLogic(),
           // home:  AddProductScreen(),
           // home:  HomeScreen(),
           // home:  ProductScreen(productModel: productModel),
-
+          home:SignInLogic(),
           debugShowCheckedModeBanner: true,
       ),
     );
