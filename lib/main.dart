@@ -1,6 +1,7 @@
 
 import 'package:amazon/controller/provider/auth_provider.dart';
 import 'package:amazon/firebase_options.dart';
+import 'package:amazon/model/product_model.dart';
 import 'package:amazon/utils/theme.dart';
 import 'package:amazon/view/auth_screens.dart';
 import 'package:amazon/view/otp_screen.dart';
@@ -12,6 +13,7 @@ import 'package:amazon/view/user/address_screen/address_screen.dart';
 import 'package:amazon/view/user/cart/cart_screen.dart';
 import 'package:amazon/view/user/home/home_screen.dart';
 import 'package:amazon/view/user/menu/menu_screen.dart';
+import 'package:amazon/view/user/prduct_screen/product_screen.dart';
 import 'package:amazon/view/user/profile/profile_screen.dart';
 import 'package:amazon/view/user/user_data_screen/user_data_input_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -40,6 +42,9 @@ class Amazon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    ProductModel productModel = ProductModel();
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
@@ -59,9 +64,11 @@ class Amazon extends StatelessWidget {
           // home: const AddressScreen(),
           // home:  SellerBottomNavBar(),
           // home:  InventoryScreen(),
-          // home:  SignInLogic(),
+          home:  const SignInLogic(),
           // home:  AddProductScreen(),
-          home:  HomeScreen(),
+          // home:  HomeScreen(),
+          // home:  ProductScreen(productModel: productModel),
+
           debugShowCheckedModeBanner: true,
       ),
     );
