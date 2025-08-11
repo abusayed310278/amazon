@@ -11,6 +11,7 @@ import '../../../utils/colors.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 
+import '../../searched_product_screen/searched_product_screen.dart';
 import '../address_screen/address_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -681,40 +682,55 @@ class HomePageAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           // Search bar
-          SizedBox(
-            width: width * 0.81,
-            child: TextField(
-              onTap: () {
-                log('Redirecting you to search product screen');
-              },
-              cursorColor: black,
-              decoration: InputDecoration(
-                fillColor: white,
-                filled: true,
-                hintText: 'Search Amazon.bd',
-                prefixIcon: Icon(Icons.search, color: black),
-                suffixIcon: Icon(Icons.camera_alt_sharp, color: grey),
-                contentPadding: EdgeInsets.symmetric(horizontal: width * 0.03),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: grey),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                PageTransition(
+                  child: const SearchedProductScreen(),
+                  type: PageTransitionType.rightToLeft,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: grey),
+              );
+            },
+            child: Container(
+              width: width * 0.81,
+              height: height * 0.06,
+              padding: EdgeInsets.symmetric(
+                horizontal: width * 0.04,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                  5,
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: grey),
+                border: Border.all(
+                  color: grey,
                 ),
-                disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: grey),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: grey),
-                ),
+                color: white,
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.search,
+                    color: black,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: width * 0.03,
+                    ),
+                    child: Text(
+                      'Search Amazon.in',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(color: grey),
+                    ),
+                  ),
+                  const Spacer(),
+                  Icon(
+                    Icons.camera_alt_sharp,
+                    color: grey,
+                  ),
+                ],
               ),
             ),
           ),

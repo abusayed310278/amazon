@@ -20,6 +20,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'controller/provider/address_provider.dart';
 import 'controller/provider/product_provider/product_provider.dart';
+import 'controller/provider/users_product_provider/users_product_provider.dart';
 import 'firebase_options.dart';
 
 Future main()async {
@@ -44,6 +45,7 @@ class Amazon extends StatelessWidget {
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
         ChangeNotifierProvider<AddressProvider>(create: (_) => AddressProvider()),
         ChangeNotifierProvider<SellerProductProvider>(create: (_) => SellerProductProvider()),
+        ChangeNotifierProvider<UsersProductProvider>(create: (_) => UsersProductProvider()),
 
       ],
       child: MaterialApp(
@@ -57,8 +59,9 @@ class Amazon extends StatelessWidget {
           // home: const AddressScreen(),
           // home:  SellerBottomNavBar(),
           // home:  InventoryScreen(),
-          home:  SignInLogic(),
+          // home:  SignInLogic(),
           // home:  AddProductScreen(),
+          home:  HomeScreen(),
           debugShowCheckedModeBanner: true,
       ),
     );
