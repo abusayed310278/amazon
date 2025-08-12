@@ -18,6 +18,10 @@ import '../../controller/provider/users_product_provider/users_product_provider.
 class SearchedProductScreen extends StatefulWidget {
   const SearchedProductScreen({super.key});
 
+
+
+
+
   @override
   State<SearchedProductScreen> createState() => _SearchedProductScreenState();
 }
@@ -160,6 +164,7 @@ class _SearchedProductScreenState extends State<SearchedProductScreen> {
 
     return Scaffold(
       appBar: PreferredSize(
+
         preferredSize: Size(width, height * 0.1),
 
         child: Container(
@@ -233,8 +238,7 @@ class _SearchedProductScreenState extends State<SearchedProductScreen> {
                 itemCount: usersProductProvider.searchedProducts.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  ProductModel currentProduct =
-                      usersProductProvider.searchedProducts[index];
+                  ProductModel currentProduct = usersProductProvider.searchedProducts[index];
                   return InkWell(
                     // onTap: () async {
                     //   // await UsersProductService.addRecentlySeenProduct(
@@ -243,7 +247,13 @@ class _SearchedProductScreenState extends State<SearchedProductScreen> {
                     //   // );
                     // },
 
-                    onTap: () {
+                    onTap: () async{
+
+                      await UsersProductService.addRecentlySeenProduct(
+                        context: context,
+                        productModel: currentProduct,
+                      );
+
                       Navigator.push(
                         context,
                         PageTransition(

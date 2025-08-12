@@ -38,6 +38,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
     return Scaffold(
       appBar: PreferredSize(
+
         preferredSize: Size(width, height * 0.1),
         child: HomePageAppBar(width: width, height: height),
       ),
@@ -46,7 +47,7 @@ class _ProductScreenState extends State<ProductScreen> {
         width: width,
         padding: EdgeInsets.symmetric(
           horizontal: width * 0.03,
-          vertical: height * 0.02,
+          vertical: height * 0.01,
         ),
         child: SingleChildScrollView(
           child: Column(
