@@ -19,6 +19,7 @@ import '../../../utils/colors.dart';
 
 class ProductScreen extends StatefulWidget {
   ProductScreen({super.key, required this.productModel});
+
   ProductModel productModel;
 
   @override
@@ -26,30 +27,19 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-
-
-
   TextEditingController reviewTextController = TextEditingController();
   double usersRating = -1;
 
-
-
   @override
   Widget build(BuildContext context) {
-
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final textTheme = Theme.of(context).textTheme;
 
-
     return Scaffold(
       appBar: PreferredSize(
-
         preferredSize: Size(width, height * 0.1),
-        child: HomePageAppBar(
-          width: width,
-          height: height,
-        ),
+        child: HomePageAppBar(width: width, height: height),
       ),
       body: Container(
         height: height,
@@ -62,12 +52,33 @@ class _ProductScreenState extends State<ProductScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              CarouselSlider(
+                options: CarouselOptions(
+                  height: height * 0.23,
+                  autoPlay: true,
+                  viewportFraction: 1,
+                ),
+                items: widget.productModel.imagesURL!.map((i) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
 
-
-              CommonFunctions.blankSpace(
-                height * 0.02,
-                0,
+                        // margin: EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: BoxDecoration(
+                          // color: Colors.amber,
+                          image: DecorationImage(
+                            image: NetworkImage(i),
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }).toList(),
               ),
+
+              CommonFunctions.blankSpace(height * 0.02, 0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -76,22 +87,42 @@ class _ProductScreenState extends State<ProductScreen> {
                     style: textTheme.labelMedium!.copyWith(color: teal),
                   ),
 
+                  Row(
+                    children: [
+                      Text(
+                        '0.0',
+                        style: textTheme.labelMedium!.copyWith(color: teal),
+                      ),
+                      CommonFunctions.blankSpace(0, width * 0.01),
+                      RatingBar(
+                        initialRating: 0,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize: width * 0.04,
+                        ignoreGestures: true,
+                        ratingWidget: RatingWidget(
+                          full: Icon(Icons.star, color: amber),
+                          half: Icon(Icons.star_half, color: amber),
+                          empty: Icon(Icons.star_outline_sharp, color: amber),
+                        ),
+                        itemPadding: EdgeInsets.zero,
+                        onRatingUpdate: (rating) {},
+                      ),
+                      CommonFunctions.blankSpace(0, width * 0.02),
+                      Text('(0)', style: textTheme.labelMedium),
+                    ],
+                  ),
                 ],
               ),
-              CommonFunctions.blankSpace(
-                height * 0.02,
-                0,
-              ),
+              CommonFunctions.blankSpace(height * 0.02, 0),
               Text(
                 widget.productModel.name!,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: textTheme.labelMedium,
               ),
-              CommonFunctions.blankSpace(
-                height * 0.01,
-                0,
-              ),
+              CommonFunctions.blankSpace(height * 0.01, 0),
               RichText(
                 text: TextSpan(
                   children: [
@@ -104,7 +135,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                     TextSpan(
                       text:
-                      '\t\t₹ ${widget.productModel.price!.toStringAsFixed(0)}',
+                          '\t\$${widget.productModel.price!.toStringAsFixed(0)}',
                       style: textTheme.displayLarge!.copyWith(
                         color: black,
                         fontWeight: FontWeight.w600,
@@ -116,12 +147,12 @@ class _ProductScreenState extends State<ProductScreen> {
               Text(
                 'M.R.P: ₹ ${widget.productModel.price}',
                 style: textTheme.labelMedium!.copyWith(
-                    color: grey, decoration: TextDecoration.lineThrough),
+                  color: grey,
+                  decoration: TextDecoration.lineThrough,
+                ),
               ),
-              CommonFunctions.blankSpace(
-                height * 0.02,
-                0,
-              ),
+              CommonFunctions.blankSpace(height * 0.02, 0),
+
               ElevatedButton(
                 onPressed: () async {
                   UserProductModel model = UserProductModel(
@@ -143,18 +174,15 @@ class _ProductScreenState extends State<ProductScreen> {
                     time: DateTime.now(),
                   );
                   await UsersProductService.addProductToCart(
-                      context: context, productModel: model);
+                    context: context,
+                    productModel: model,
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: amber,
-                  minimumSize: Size(
-                    width,
-                    height * 0.06,
-                  ),
+                  minimumSize: Size(width, height * 0.06),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      50,
-                    ),
+                    borderRadius: BorderRadius.circular(50),
                   ),
                 ),
                 child: Text(
@@ -162,22 +190,14 @@ class _ProductScreenState extends State<ProductScreen> {
                   style: textTheme.bodyMedium!.copyWith(color: black),
                 ),
               ),
-              CommonFunctions.blankSpace(
-                height * 0.01,
-                0,
-              ),
+              CommonFunctions.blankSpace(height * 0.01, 0),
               ElevatedButton(
-                onPressed: (){},
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: orange,
-                  minimumSize: Size(
-                    width,
-                    height * 0.06,
-                  ),
+                  minimumSize: Size(width, height * 0.06),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      50,
-                    ),
+                    borderRadius: BorderRadius.circular(50),
                   ),
                 ),
                 child: Text(
@@ -185,63 +205,43 @@ class _ProductScreenState extends State<ProductScreen> {
                   style: textTheme.bodyMedium!.copyWith(color: black),
                 ),
               ),
-              CommonFunctions.blankSpace(
-                height * 0.02,
-                0,
-              ),
+              CommonFunctions.blankSpace(height * 0.02, 0),
               CommonFunctions.divider(),
-              CommonFunctions.blankSpace(
-                height * 0.01,
-                0,
-              ),
+              CommonFunctions.blankSpace(height * 0.01, 0),
               Text(
                 'Features',
                 style: textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              CommonFunctions.blankSpace(
-                height * 0.005,
-                0,
-              ),
+              CommonFunctions.blankSpace(height * 0.005, 0),
               Text(
                 widget.productModel.description!,
-                style: textTheme.labelMedium!
-                    .copyWith(fontWeight: FontWeight.w400, color: grey),
+                style: textTheme.labelMedium!.copyWith(
+                  fontWeight: FontWeight.w400,
+                  color: grey,
+                ),
               ),
-              CommonFunctions.blankSpace(
-                height * 0.02,
-                0,
-              ),
+              CommonFunctions.blankSpace(height * 0.02, 0),
               CommonFunctions.divider(),
-              CommonFunctions.blankSpace(
-                height * 0.01,
-                0,
-              ),
+              CommonFunctions.blankSpace(height * 0.01, 0),
               Text(
                 'Specification',
                 style: textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              CommonFunctions.blankSpace(
-                height * 0.005,
-                0,
-              ),
+              CommonFunctions.blankSpace(height * 0.005, 0),
               Text(
                 widget.productModel.specifications!,
-                style: textTheme.labelMedium!
-                    .copyWith(fontWeight: FontWeight.w400, color: grey),
+                style: textTheme.labelMedium!.copyWith(
+                  fontWeight: FontWeight.w400,
+                  color: grey,
+                ),
               ),
-              CommonFunctions.blankSpace(
-                height * 0.02,
-                0,
-              ),
+              CommonFunctions.blankSpace(height * 0.02, 0),
               CommonFunctions.divider(),
-              CommonFunctions.blankSpace(
-                height * 0.02,
-                0,
-              ),
+              CommonFunctions.blankSpace(height * 0.02, 0),
 
               Text(
                 'Product Image Gallery',
@@ -249,27 +249,21 @@ class _ProductScreenState extends State<ProductScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              CommonFunctions.blankSpace(
-                height * 0.01,
-                0,
-              ),
+              CommonFunctions.blankSpace(height * 0.01, 0),
               ListView.builder(
-                  itemCount: widget.productModel.imagesURL!.length,
-                  shrinkWrap: true,
-                  physics: const PageScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Image(
-                      image: NetworkImage(
-                        widget.productModel.imagesURL![index],
-                      ),
-                    );
-                  })
+                itemCount: widget.productModel.imagesURL!.length,
+                shrinkWrap: true,
+                physics: const PageScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return Image(
+                    image: NetworkImage(widget.productModel.imagesURL![index]),
+                  );
+                },
+              ),
             ],
           ),
         ),
       ),
     );
   }
-
-
 }
