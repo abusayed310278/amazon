@@ -6,13 +6,16 @@ import 'package:amazon/controller/services/user_data_crud_services/user_data_CRU
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import '../../../controller/provider/deal_of_the_day_provider/deal_of_the_day_provider.dart';
 import '../../../model/address_model.dart';
+import '../../../model/product_model.dart';
 import '../../../utils/colors.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 
 import '../../searched_product_screen/searched_product_screen.dart';
 import '../address_screen/address_screen.dart';
+import '../prduct_screen/product_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,8 +25,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final CarouselSliderController todayDealsCarouselController =
-      CarouselSliderController();
+  final CarouselSliderController todayDealsCarouselController = CarouselSliderController();
 
   checkUserAddress()async{
     bool userAddressPresent=await UserDataCRUD.checkUsersAddress();
@@ -157,11 +159,13 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       checkUserAddress();
       context.read<AddressProvider>().getCurrentSelectedAddress();
+      context.read<DealOfTheDayProvider>().fetchTodaysDeal();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final textTheme = Theme.of(context).textTheme;
@@ -370,12 +374,9 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class TodaysDealHomeScreenWidget extends StatelessWidget {
-  const TodaysDealHomeScreenWidget({
+   const TodaysDealHomeScreenWidget({
     super.key,
-    required this.width,
-    required this.height,
-    required this.textTheme,
-    required this.todayDealsCarouselController,
+    required this.todayDealsCarouselController, required this.width, required this.height, required this.textTheme,
   });
 
   final double width;
@@ -385,6 +386,11 @@ class TodaysDealHomeScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final textTheme = Theme.of(context).textTheme;
+
     return SizedBox(
       width: width,
       child: Padding(
@@ -392,118 +398,140 @@ class TodaysDealHomeScreenWidget extends StatelessWidget {
           horizontal: width * 0.03,
           vertical: height * 0.01,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '50%-80% off | Latest deals.',
-              style: textTheme.displaySmall!.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            CarouselSlider(
-              carouselController: todayDealsCarouselController,
-              options: CarouselOptions(
-                height: height * 0.23,
-                autoPlay: true,
-                viewportFraction: 1,
-              ),
-              items: todaysDeals.map((i) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/todays_deals/$i'),
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                    );
-                  },
-                );
-              }).toList(),
-            ),
-            CommonFunctions.blankSpace(height * 0.01, 0),
-            Row(
-              children: [
-                Container(
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: red,
-                    ),
-                    child: Text(
-                      'Upto 62% off',
-                      style: textTheme.labelMedium!.copyWith(color: white),
-                    ),
-                  ),
-                ),
-                CommonFunctions.blankSpace(0, width * 0.03),
-                Text(
-                  'Deal of the Day',
-                  style: textTheme.labelMedium!.copyWith(
-                    color: red,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-
-            CommonFunctions.blankSpace(height * 0.01, 0),
-
-            GridView.builder(
-              // The gridDelegate defines the layout of the grid.
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, // Sets 2 columns in the grid.
-                crossAxisSpacing: 10.0, // Space between columns.
-                mainAxisSpacing: 20.0, // Space between rows.
-                childAspectRatio: 1.0,
-              ),
-              itemCount: 4,
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    log(index.toString());
-                    todayDealsCarouselController.animateToPage(
-                      index,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: greyShade3),
-                      image: DecorationImage(
-                        image: AssetImage(
-                          'assets/images/todays_deals/${todaysDeals[index]}',
-                        ),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+        child: Consumer<DealOfTheDayProvider>(
+            builder: (context, dealOfTheDayProvider, child) {
+              if (dealOfTheDayProvider.dealsFetched == false) {
+                return Container(
+                  height: height * 0.2,
+                  width: width,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Loading Latest Deals',
+                    style: textTheme.bodyMedium,
                   ),
                 );
-              },
-            ),
-
-            CommonFunctions.blankSpace(height * 0.01, 0),
-
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                'See all Deals',
-                style: textTheme.bodySmall!.copyWith(color: blue),
-              ),
-            ),
-          ],
-        ),
+              } else {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Text(
+                    //   '${dealOfTheDayProvider.deals[3].discountPercentage}%-${dealOfTheDayProvider.deals[0].discountPercentage}% off | Latest deals.',
+                    //   style: textTheme.displaySmall!.copyWith(
+                    //     fontWeight: FontWeight.w600,
+                    //   ),
+                    // ),
+                    CommonFunctions.blankSpace(height * 0.01, 0),
+                    CarouselSlider(
+                      carouselController: todayDealsCarouselController,
+                      options: CarouselOptions(
+                        height: height * 0.2,
+                        autoPlay: true,
+                        viewportFraction: 1,
+                      ),
+                      items: dealOfTheDayProvider.deals.map((i) {
+                        ProductModel currentProduct = i;
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    child:
+                                    ProductScreen(productModel: currentProduct),
+                                    type: PageTransitionType.rightToLeft,
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: white,
+                                  image: DecorationImage(
+                                    image:
+                                    NetworkImage(currentProduct.imagesURL![0]),
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
+                    CommonFunctions.blankSpace(
+                      height * 0.01,
+                      0,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                5,
+                              ),
+                              color: red),
+                          child: Text(
+                            'Upto 62% Off',
+                            style: textTheme.labelMedium!.copyWith(color: white),
+                          ),
+                        ),
+                        CommonFunctions.blankSpace(0, width * 0.03),
+                        Text(
+                          'Deal of the Day',
+                          style: textTheme.labelMedium!.copyWith(
+                            color: red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    CommonFunctions.blankSpace(height * 0.01, 0),
+                    GridView.builder(
+                        itemCount: dealOfTheDayProvider.deals.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 20),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          ProductModel currentModel =
+                          dealOfTheDayProvider.deals[index];
+                          return InkWell(
+                            onTap: () {
+                              log(index.toString());
+                              todayDealsCarouselController.animateToPage(index);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: greyShade3,
+                                ),
+                                image: DecorationImage(
+                                  image: NetworkImage(currentModel.imagesURL![0]),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'See all Deals',
+                        style: textTheme.bodySmall!.copyWith(
+                          color: blue,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
+            }),
       ),
     );
   }

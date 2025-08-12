@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'controller/provider/address_provider.dart';
+import 'controller/provider/deal_of_the_day_provider/deal_of_the_day_provider.dart';
 import 'controller/provider/product_provider/product_provider.dart';
 import 'controller/provider/users_product_provider/users_product_provider.dart';
 import 'firebase_options.dart';
@@ -50,6 +51,7 @@ class Amazon extends StatelessWidget {
         ChangeNotifierProvider<AddressProvider>(create: (_) => AddressProvider()),
         ChangeNotifierProvider<SellerProductProvider>(create: (_) => SellerProductProvider()),
         ChangeNotifierProvider<UsersProductProvider>(create: (_) => UsersProductProvider()),
+        ChangeNotifierProvider<DealOfTheDayProvider>(create: (_) => DealOfTheDayProvider()),
 
       ],
       child: MaterialApp(

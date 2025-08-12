@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:amazon/constants/common_functions.dart';
+import 'package:page_transition/page_transition.dart';
+import '../../../controller/services/users_product_services/users_product_services.dart';
+import '../../../model/product_model.dart';
 import '../../../utils/colors.dart';
+import '../prduct_screen/product_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -50,11 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 IconButton(
                   onPressed: () {},
-                  icon: Icon(
-                    Icons.search,
-                    color: black,
-                    size: height * 0.03,
-                  ),
+                  icon: Icon(Icons.search, color: black, size: height * 0.03),
                 ),
               ],
             ),
@@ -64,7 +64,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             children: [
               SizedBox(height: height * 0.02),
-              UserGreetingsYouScreen(width: width, textTheme: textTheme, height: height),
+              UserGreetingsYouScreen(
+                width: width,
+                textTheme: textTheme,
+                height: height,
+              ),
               CommonFunctions.blankSpace(height * 0.02, 0),
               YouGridBtons(width: width, textTheme: textTheme),
               CommonFunctions.blankSpace(height * 0.02, 0),
@@ -107,7 +111,9 @@ class UserGreetingsYouScreen extends StatelessWidget {
                 TextSpan(text: 'Hello, ', style: textTheme.bodyLarge),
                 TextSpan(
                   text: 'Said',
-                  style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                  style: textTheme.bodyLarge!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -121,7 +127,12 @@ class UserGreetingsYouScreen extends StatelessWidget {
 }
 
 class KeepShopping extends StatelessWidget {
-  const KeepShopping({super.key, required this.width, required this.height, required this.textTheme});
+  const KeepShopping({
+    super.key,
+    required this.width,
+    required this.height,
+    required this.textTheme,
+  });
 
   final double width;
   final double height;
@@ -130,46 +141,116 @@ class KeepShopping extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: width * 0.04, vertical: height * 0.01),
+      padding: EdgeInsets.symmetric(
+        horizontal: width * 0.04,
+        vertical: height * 0.01,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Keep Shopping for', style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold)),
+          Text(
+            'Keep Shopping for',
+            style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+          ),
           SizedBox(height: height * 0.01),
           TextButton(
             onPressed: () {},
-            child: Text('Browsing History', style: textTheme.bodySmall!.copyWith(color: Colors.blue)),
+            child: Text(
+              'Browsing History',
+              style: textTheme.bodySmall!.copyWith(color: Colors.blue),
+            ),
           ),
           SizedBox(height: height * 0.01),
-          GridView.builder(
-            itemCount: 5,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 0.9,
-            ),
-            itemBuilder: (context, index) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade300),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Center(child: Icon(Icons.shopping_bag)),
-                    ),
+
+          StreamBuilder(
+            stream: UsersProductService.fetchKeepShoppingForProducts(),
+            builder: (context, snapshot) {
+              if (snapshot.data!.isEmpty) {
+                return Container(
+                  height: height * 0.15,
+                  width: width,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Start Browsing for Products',
+                    style: textTheme.bodyMedium,
                   ),
-                  SizedBox(height: height * 0.005),
-                  CircleAvatar(backgroundColor: Colors.grey.shade300, radius: height * 0.025),
-                  SizedBox(height: height * 0.005),
-                  Text('Product', style: textTheme.bodyMedium),
-                ],
-              );
+                );
+              }
+
+              if (snapshot.hasData) {
+                List<ProductModel> products = snapshot.data!;
+                return GridView.builder(
+                  itemCount: (products.length > 6) ? 6 : products.length,
+                  shrinkWrap: true,
+                  physics: const PageScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 0.8,
+                  ),
+                  itemBuilder: (context, index) {
+                    ProductModel currentProduct = products[index];
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            child: ProductScreen(productModel: currentProduct),
+                            type: PageTransitionType.rightToLeft,
+                          ),
+                        );
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: greyShade3),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Image(
+                                image: NetworkImage(
+                                  currentProduct.imagesURL![0],
+                                ),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                          CommonFunctions.blankSpace(height * 0.005, 0),
+                          Text(
+                            currentProduct.name!,
+                            maxLines: 2,
+                            style: textTheme.labelLarge,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }
+              if (snapshot.hasError) {
+                return Container(
+                  height: height * 0.15,
+                  width: width,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Opps! There was an Error',
+                    style: textTheme.bodyMedium,
+                  ),
+                );
+              } else {
+                return Container(
+                  height: height * 0.15,
+                  width: width,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Opps! No Product Found',
+                    style: textTheme.bodyMedium,
+                  ),
+                );
+              }
             },
           ),
         ],
@@ -179,7 +260,12 @@ class KeepShopping extends StatelessWidget {
 }
 
 class BuyAgain extends StatelessWidget {
-  const BuyAgain({super.key, required this.width, required this.height, required this.textTheme});
+  const BuyAgain({
+    super.key,
+    required this.width,
+    required this.height,
+    required this.textTheme,
+  });
 
   final double width;
   final double height;
@@ -188,14 +274,25 @@ class BuyAgain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: width * 0.04, vertical: height * 0.01),
+      padding: EdgeInsets.symmetric(
+        horizontal: width * 0.04,
+        vertical: height * 0.01,
+      ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Buy Again', style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold)),
-              Text('See all', style: textTheme.bodySmall!.copyWith(color: blue)),
+              Text(
+                'Buy Again',
+                style: textTheme.bodyLarge!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                'See all',
+                style: textTheme.bodySmall!.copyWith(color: blue),
+              ),
             ],
           ),
           CommonFunctions.blankSpace(height * 0.02, 0),
@@ -217,7 +314,7 @@ class BuyAgain extends StatelessWidget {
                 );
               },
             ),
-          )
+          ),
         ],
       ),
     );
@@ -225,7 +322,12 @@ class BuyAgain extends StatelessWidget {
 }
 
 class UsersOrders extends StatelessWidget {
-  const UsersOrders({super.key, required this.width, required this.height, required this.textTheme});
+  const UsersOrders({
+    super.key,
+    required this.width,
+    required this.height,
+    required this.textTheme,
+  });
 
   final double width;
   final double height;
@@ -234,14 +336,25 @@ class UsersOrders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: width * 0.04, vertical: height * 0.01),
+      padding: EdgeInsets.symmetric(
+        horizontal: width * 0.04,
+        vertical: height * 0.01,
+      ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Your Orders', style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold)),
-              Text('See all', style: textTheme.bodySmall!.copyWith(color: blue)),
+              Text(
+                'Your Orders',
+                style: textTheme.bodyLarge!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                'See all',
+                style: textTheme.bodySmall!.copyWith(color: blue),
+              ),
             ],
           ),
           CommonFunctions.blankSpace(height * 0.02, 0),
@@ -262,7 +375,7 @@ class UsersOrders extends StatelessWidget {
                 );
               },
             ),
-          )
+          ),
         ],
       ),
     );
@@ -287,7 +400,12 @@ class YouGridBtons extends StatelessWidget {
       ),
       itemCount: 4,
       itemBuilder: (context, index) {
-        final labels = ['Your Orders', 'Buy again', 'Your Account', 'Your Wish List'];
+        final labels = [
+          'Your Orders',
+          'Buy again',
+          'Your Account',
+          'Your Wish List',
+        ];
         return Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
