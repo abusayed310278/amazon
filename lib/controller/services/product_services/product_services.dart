@@ -34,6 +34,31 @@ class ProductServices {
     return selectedImages;
   }
 
+  static Future addSalesData({
+    required BuildContext context,
+    required UserProductModel productModel,
+    required String userID,
+  }) async {
+    try {
+      Uuid uuid = const Uuid();
+      await firestore
+          .collection('productSaleData')
+          .doc(productModel.productID)
+          .collection('purchase_history')
+          .doc(userID + uuid.v1())
+          .set(productModel.toMap())
+          .whenComplete(() {
+        log('Data Added');
+
+        // CommonFunctions.showSuccessToast(
+        //     context: context, message: 'Product Added Successful');
+      });
+    } catch (e) {
+      log(e.toString());
+      CommonFunctions.showErrorToast(context: context, message: e.toString());
+    }
+  }
+
   static Stream<List<UserProductModel>> fetchSalesPerProduct({
     required String productID,
   }) => firestore

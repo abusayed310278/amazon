@@ -13,7 +13,6 @@ import '../../../constants/common_functions.dart';
 import '../../../model/product_model.dart';
 
 class UsersProductService {
-
   static Future<List<ProductModel>> getProducts(String productName) async {
     List<ProductModel> sellersProducts = [];
     if (productName.isEmpty) {
@@ -23,8 +22,9 @@ class UsersProductService {
       final QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
           .collection('Products')
           .orderBy('name')
-          .startAt([productName.toUpperCase()]).endAt(
-          ['${productName.toLowerCase()}\uf8ff']).get();
+          .startAt([productName.toUpperCase()])
+          .endAt(['${productName.toLowerCase()}\uf8ff'])
+          .get();
 
       snapshot.docs.forEach((element) {
         sellersProducts.add(ProductModel.fromMap(element.data()));
@@ -50,21 +50,23 @@ class UsersProductService {
           .where('productID', isEqualTo: productModel.productID)
           .get()
           .then((value) async {
-        if (value.size < 1) {
-          await firestore
-              .collection('Cart')
-              .doc(auth.currentUser!.phoneNumber)
-              .collection('myCart')
-              .doc(productModel.productID)
-              .set(productModel.toMap())
-              .whenComplete(() {
-            log('Data Added');
+            if (value.size < 1) {
+              await firestore
+                  .collection('Cart')
+                  .doc(auth.currentUser!.phoneNumber)
+                  .collection('myCart')
+                  .doc(productModel.productID)
+                  .set(productModel.toMap())
+                  .whenComplete(() {
+                    log('Data Added');
 
-            CommonFunctions.showToast(
-                context: context, message: 'Product Added Successful');
+                    CommonFunctions.showToast(
+                      context: context,
+                      message: 'Product Added Successful',
+                    );
+                  });
+            }
           });
-        }
-      });
     } catch (e) {
       log(e.toString());
       CommonFunctions.showToast(context: context, message: e.toString());
@@ -83,15 +85,15 @@ class UsersProductService {
           .where('productID', isEqualTo: productModel.productID)
           .get()
           .then((value) async {
-        if (value.size < 1) {
-          await firestore
-              .collection('Recently_Seen_Products')
-              .doc(auth.currentUser!.phoneNumber)
-              .collection('products')
-              .doc(productModel.productID)
-              .set(productModel.toMap());
-        }
-      });
+            if (value.size < 1) {
+              await firestore
+                  .collection('Recently_Seen_Products')
+                  .doc(auth.currentUser!.phoneNumber)
+                  .collection('products')
+                  .doc(productModel.productID)
+                  .set(productModel.toMap());
+            }
+          });
     } catch (e) {
       log(e.toString());
       CommonFunctions.showToast(context: context, message: e.toString());
@@ -104,9 +106,11 @@ class UsersProductService {
       .collection('myCart')
       .orderBy('time', descending: true)
       .snapshots()
-      .map((snapshot) => snapshot.docs.map((doc) {
-    return UserProductModel.fromMap(doc.data());
-  }).toList());
+      .map(
+        (snapshot) => snapshot.docs.map((doc) {
+          return UserProductModel.fromMap(doc.data());
+        }).toList(),
+      );
 
   static Future<void> updateCountCartProduct({
     required String productId,
@@ -119,8 +123,9 @@ class UsersProductService {
         .collection('myCart');
 
     try {
-      final snapshot =
-      await collectionRef.where('productID', isEqualTo: productId).get();
+      final snapshot = await collectionRef
+          .where('productID', isEqualTo: productId)
+          .get();
 
       if (snapshot.docs.isNotEmpty) {
         final docId = snapshot.docs[0].id;
@@ -141,8 +146,9 @@ class UsersProductService {
         .collection('myCart');
 
     try {
-      final snapshot =
-      await collectionRef.where('productID', isEqualTo: productId).get();
+      final snapshot = await collectionRef
+          .where('productID', isEqualTo: productId)
+          .get();
 
       if (snapshot.docs.isNotEmpty) {
         final docId = snapshot.docs[0].id;
@@ -153,15 +159,43 @@ class UsersProductService {
     }
   }
 
+  static Future addOrder({
+    required BuildContext context,
+    required UserProductModel productModel,
+  }) async {
+    try {
+      Uuid uuid = Uuid();
+      await firestore
+          .collection('Orders')
+          .doc(auth.currentUser!.phoneNumber)
+          .collection('myOrders')
+          .doc(productModel.productID! + uuid.v1())
+          .set(productModel.toMap())
+          .whenComplete(() {
+            log('Data Added');
+
+            CommonFunctions.showSuccessToast(
+              context: context,
+              message: 'Product Ordered Successful',
+            );
+          });
+    } catch (e) {
+      log(e.toString());
+      CommonFunctions.showErrorToast(context: context, message: e.toString());
+    }
+  }
+
   static Stream<List<ProductModel>> fetchKeepShoppingForProducts() => firestore
       .collection('Recently_Seen_Products')
       .doc(auth.currentUser!.phoneNumber)
       .collection('products')
       .orderBy('uploadedAt', descending: true)
       .snapshots()
-      .map((snapshot) => snapshot.docs.map((doc) {
-    return ProductModel.fromMap(doc.data());
-  }).toList());
+      .map(
+        (snapshot) => snapshot.docs.map((doc) {
+          return ProductModel.fromMap(doc.data());
+        }).toList(),
+      );
 
   static Future featchDealOfTheDay() async {
     List<ProductModel> sellersProducts = [];
@@ -202,29 +236,7 @@ class UsersProductService {
     return sellersProducts;
   }
 
-  static Future addOrder({
-    required BuildContext context,
-    required UserProductModel productModel,
-  }) async {
-    try {
-      Uuid uuid = Uuid();
-      await firestore
-          .collection('Orders')
-          .doc(auth.currentUser!.phoneNumber)
-          .collection('myOrders')
-          .doc(productModel.productID! + uuid.v1())
-          .set(productModel.toMap())
-          .whenComplete(() {
-        log('Data Added');
 
-        CommonFunctions.showToast(
-            context: context, message: 'Product Ordered Successful');
-      });
-    } catch (e) {
-      log(e.toString());
-      CommonFunctions.showToast(context: context, message: e.toString());
-    }
-  }
 
   static Stream<List<UserProductModel>> fetchOrders() => firestore
       .collection('Orders')
@@ -232,9 +244,11 @@ class UsersProductService {
       .collection('myOrders')
       .orderBy('time', descending: true)
       .snapshots()
-      .map((snapshot) => snapshot.docs.map((doc) {
-    return UserProductModel.fromMap(doc.data());
-  }).toList());
+      .map(
+        (snapshot) => snapshot.docs.map((doc) {
+          return UserProductModel.fromMap(doc.data());
+        }).toList(),
+      );
 
   static Future fetchCart() async {
     List<UserProductModel> sellersProducts = [];
@@ -256,8 +270,4 @@ class UsersProductService {
     log(sellersProducts.toList().toString());
     return sellersProducts;
   }
-
-
-
-
 }

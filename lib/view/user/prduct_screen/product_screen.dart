@@ -13,7 +13,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:uuid/uuid.dart';
+import '../../../controller/provider/rating_provider/rating_provider.dart';
 import '../../../model/product_model.dart';
 import '../../../utils/colors.dart';
 
@@ -29,6 +31,93 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   TextEditingController reviewTextController = TextEditingController();
   double usersRating = -1;
+
+  // ! RAZORPAY CODES (Payment Gateway)
+  final razorpay = Razorpay();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+      razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+      razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+      context.read<RatingProvider>().reset();
+      setState(() {
+        usersRating = -1;
+      });
+      context
+          .read<RatingProvider>()
+          .checkUserRating(productID: widget.productModel.productID!);
+      context
+          .read<RatingProvider>()
+          .checkProductPurchase(productID: widget.productModel.productID!);
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    razorpay.clear();
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    UserProductModel userProductModel = UserProductModel(
+      imagesURL: widget.productModel.imagesURL,
+      name: widget.productModel.name,
+      category: widget.productModel.category,
+      description: widget.productModel.description,
+      brandName: widget.productModel.brandName,
+      manufacturerName: widget.productModel.manufacturerName,
+      countryOfOrigin: widget.productModel.countryOfOrigin,
+      specifications: widget.productModel.specifications,
+      price: widget.productModel.price,
+      discountedPrice: widget.productModel.discountedPrice,
+      productID: widget.productModel.productID,
+      productSellerID: widget.productModel.productSellerID,
+      inStock: widget.productModel.inStock,
+      discountPercentage: widget.productModel.discountPercentage,
+      productCount: 1,
+      time: DateTime.now(),
+    );
+    await ProductServices.addSalesData(
+      context: context,
+      productModel: userProductModel,
+      userID: auth.currentUser!.phoneNumber!,
+    );
+    await UsersProductService.addOrder(
+        context: context, productModel: userProductModel);
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    CommonFunctions.showErrorToast(
+      context: context,
+      message: 'Opps! Product Purchase Failed',
+    );
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {}
+
+  executePayment() {
+    var options = {
+      'key': keyID,
+      // 'amount': widget.productModel.discountedPrice! * 100,
+      'amount': 1 * 100, // Amount is rs 1,
+      // here amount * 100 because razorpay counts amount in paisa
+      //i.e 100 paisa = 1 Rupee
+      // 'image' : '<YOUR BUISNESS EMAIL>'
+      'name': widget.productModel.name,
+      'description': (widget.productModel.description!.length < 255)
+          ? widget.productModel.description!.length
+          : widget.productModel.description!.substring(0, 250),
+      'prefill': {
+        'contact': auth.currentUser!.phoneNumber, //<USERS CONTACT NO.>
+        'email': 'test@razorpay.com' // <USERS EMAIL NO.>
+      }
+    };
+
+    razorpay.open(options);
+  }
 
   @override
   Widget build(BuildContext context) {

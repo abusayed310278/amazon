@@ -7,8 +7,8 @@ FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseStorage storage = FirebaseStorage.instance;
 final picker = ImagePicker();
-const String keySecret = '<Razorpay Secret>';
-const String keyID = '<Razorpay Key ID>';
+const String keySecret = 'rzp_test_OQ3TxtVSpYZgYB,';
+const String keyID = 'drAxXAkpjlDV2KzjlXA88dJY';
 
 List<String> categories = [
   'Prime',
