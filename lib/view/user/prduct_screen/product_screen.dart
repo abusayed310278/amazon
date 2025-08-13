@@ -119,7 +119,7 @@ class _ProductScreenState extends State<ProductScreen> {
     razorpay.open(options);
   }
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
