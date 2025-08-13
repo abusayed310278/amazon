@@ -14,10 +14,10 @@ import 'package:uuid/uuid.dart';
 
 import '../../../constants/constants.dart';
 import 'package:amazon/model/product_model.dart';
+import '../../../model/user_product_model.dart';
 import '../../provider/product_provider/product_provider.dart';
 
 class ProductServices {
-
   static Future getImages({required BuildContext context}) async {
     List<File> selectedImages = [];
     final pickedFile = await picker.pickMultiImage(imageQuality: 100);
@@ -34,7 +34,18 @@ class ProductServices {
     return selectedImages;
   }
 
-
+  static Stream<List<UserProductModel>> fetchSalesPerProduct({
+    required String productID,
+  }) => firestore
+      .collection('productSaleData')
+      .doc(productID)
+      .collection('purchase_history')
+      .snapshots()
+      .map(
+        (snapshot) => snapshot.docs.map((doc) {
+          return UserProductModel.fromMap(doc.data());
+        }).toList(),
+      );
 
   static const String cloudName = "dg32lbfu5";
   static const String uploadPreset = "amazon";
@@ -77,9 +88,9 @@ class ProductServices {
 
     log(uploadedUrls.toString());
     // return uploadedUrls;
-    context
-        .read<SellerProductProvider>()
-        .updateProductImagesURL(imageURLs: uploadedUrls);
+    context.read<SellerProductProvider>().updateProductImagesURL(
+      imageURLs: uploadedUrls,
+    );
 
     return uploadedUrls;
   }
