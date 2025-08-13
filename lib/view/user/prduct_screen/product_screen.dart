@@ -112,7 +112,7 @@ class _ProductScreenState extends State<ProductScreen> {
           : widget.productModel.description!.substring(0, 250),
       'prefill': {
         'contact': auth.currentUser!.phoneNumber, //<USERS CONTACT NO.>
-        'email': 'test@razorpay.com' // <USERS EMAIL NO.>
+        'email': 'abusayed310278@gmail.com' // <USERS EMAIL NO.>
       }
     };
 
@@ -282,7 +282,7 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
               CommonFunctions.blankSpace(height * 0.01, 0),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: executePayment,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: orange,
                   minimumSize: Size(width, height * 0.06),
