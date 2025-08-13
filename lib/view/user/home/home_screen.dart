@@ -16,6 +16,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import '../../searched_product_screen/searched_product_screen.dart';
 import '../address_screen/address_screen.dart';
 import '../prduct_screen/product_screen.dart';
+import '../product_category_screen/product_category_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,105 +26,123 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final CarouselSliderController todayDealsCarouselController = CarouselSliderController();
+  final CarouselSliderController todayDealsCarouselController =
+  CarouselSliderController();
 
-  checkUserAddress()async{
-    bool userAddressPresent=await UserDataCRUD.checkUsersAddress();
+  checkUserAddress() async {
+    bool userAddressPresent = await UserDataCRUD.checkUsersAddress();
     log('user Address Present :${userAddressPresent.toString()}');
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     if (userAddressPresent == false) {
       showModalBottomSheet(
-          backgroundColor: transparent,
-          context: context,
-          builder: (context) {
-            return Container(
-              height: height * 0.3,
-              padding: EdgeInsets.symmetric(
-                  vertical: height * 0.03, horizontal: width * 0.03),
-              width: width,
-              decoration: BoxDecoration(
-                color: white,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                ),
+        backgroundColor: transparent,
+        context: context,
+        builder: (context) {
+          return Container(
+            height: height * 0.3,
+            padding: EdgeInsets.symmetric(
+              vertical: height * 0.03,
+              horizontal: width * 0.03,
+            ),
+            width: width,
+            decoration: BoxDecoration(
+              color: white,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Add Address',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: height * 0.15,
-                    child: ListView.builder(
-                        itemCount: 1,
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              if (index == 0) {
-                                Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    child: const AddressScreen(),
-                                    type: PageTransitionType.rightToLeft,
-                                  ),
-                                );
-                              }
-                            },
-                            child: Container(
-                              width: width * 0.35,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.03,
-                                  vertical: height * 0.01),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: greyShade3,
-                                ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Add Address',
+                  style: Theme
+                      .of(
+                    context,
+                  )
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: height * 0.15,
+                  child: ListView.builder(
+                    itemCount: 1,
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          if (index == 0) {
+                            Navigator.push(
+                              context,
+                              PageTransition(
+                                child: const AddressScreen(),
+                                type: PageTransitionType.rightToLeft,
                               ),
-                              alignment: Alignment.center,
-                              child: Builder(builder: (context) {
-                                if (index == 0) {
-                                  return Text(
-                                    'Add Address',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: greyShade3),
-                                  );
-                                }
+                            );
+                          }
+                        },
+                        child: Container(
+                          width: width * 0.35,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: width * 0.03,
+                            vertical: height * 0.01,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: greyShade3),
+                          ),
+                          alignment: Alignment.center,
+                          child: Builder(
+                            builder: (context) {
+                              if (index == 0) {
                                 return Text(
                                   'Add Address',
-                                  style: Theme.of(context)
+                                  style: Theme
+                                      .of(context)
                                       .textTheme
                                       .bodySmall!
                                       .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: greyShade3),
+                                    fontWeight: FontWeight.bold,
+                                    color: greyShade3,
+                                  ),
                                 );
-                              }),
-                            ),
-                          );
-                        }),
+                              }
+                              return Text(
+                                'Add Address',
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: greyShade3,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                ],
-              ),
-            );
-          });
+                ),
+              ],
+            ),
+          );
+        },
+      );
     }
-
-
   }
 
   headphoneDeals(int index) {
@@ -165,10 +184,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
-    final textTheme = Theme.of(context).textTheme;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final textTheme = Theme
+        .of(context)
+        .textTheme;
 
     return SafeArea(
       child: Scaffold(
@@ -237,31 +263,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
-                  CommonFunctions.blankSpace(height*0.01, 0),
+                  CommonFunctions.blankSpace(height * 0.01, 0),
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: width*0.03,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: width * 0.03),
                     child: Text(
                       'Watch Sixer only on miniTv',
                       style: textTheme.bodyMedium!.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
-
                     ),
                   ),
                   Container(
-                    height: height*0.4,
+                    height: height * 0.4,
                     width: width,
 
                     padding: EdgeInsets.symmetric(
-                      horizontal: width*0.03,
-                      vertical: height*0.01,
+                      horizontal: width * 0.03,
+                      vertical: height * 0.01,
                     ),
                     child: Image(
                       image: AssetImage(
                         'assets/images/offersNsponcered/sixer.png',
-
                       ),
                       fit: BoxFit.fill,
                     ),
@@ -284,9 +306,17 @@ class _HomeScreenState extends State<HomeScreen> {
     required List<String> productPicNamesList,
     required String offerFor,
   }) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
-    final textTheme = Theme.of(context).textTheme;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final textTheme = Theme
+        .of(context)
+        .textTheme;
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: width * 0.03,
@@ -298,9 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Text(
             title,
-            style: textTheme.bodyMedium!.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+            style: textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600),
           ),
 
           CommonFunctions.blankSpace(height * 0.01, 0),
@@ -308,55 +336,56 @@ class _HomeScreenState extends State<HomeScreen> {
           productPicNamesList.isEmpty
               ? Center(child: Text("No headphone launches available"))
               : GridView.builder(
-                  // The gridDelegate defines the layout of the grid.
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Sets 2 columns in the grid.
-                    crossAxisSpacing: 10.0, // Space between columns.
-                    mainAxisSpacing: 20.0, // Space between rows.
-                    childAspectRatio: 1.0,
-                  ),
-                  itemCount: productPicNamesList.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {},
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                // border: Border.all(color: greyShade3),
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    'assets/images/offersNsponcered/${productPicNamesList[index]}',
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+            // The gridDelegate defines the layout of the grid.
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Sets 2 columns in the grid.
+              crossAxisSpacing: 10.0, // Space between columns.
+              mainAxisSpacing: 20.0, // Space between rows.
+              childAspectRatio: 1.0,
+            ),
+            itemCount: productPicNamesList.length,
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {},
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          // border: Border.all(color: greyShade3),
+                          image: DecorationImage(
+                            image: AssetImage(
+                              'assets/images/offersNsponcered/${productPicNamesList[index]}',
                             ),
+                            fit: BoxFit.cover,
                           ),
-
-                          SizedBox(height: 5), // Optional spacing
-
-                          // Text(
-                          //   headphonesDeals[index].split('.').first, // ✅ correct
-                          //   style: textTheme.bodyMedium,
-                          // ),
-                          Text(
-                            offerFor == 'headphones'
-                                ? headphoneDeals(index)
-                                : clothingDeals(index),
-                            style: textTheme.bodyMedium,
-                          ),
-                        ],
+                        ),
                       ),
-                    );
-                  },
+                    ),
+
+                    SizedBox(height: 5),
+                    // Optional spacing
+
+                    // Text(
+                    //   headphonesDeals[index].split('.').first, // ✅ correct
+                    //   style: textTheme.bodyMedium,
+                    // ),
+                    Text(
+                      offerFor == 'headphones'
+                          ? headphoneDeals(index)
+                          : clothingDeals(index),
+                      style: textTheme.bodyMedium,
+                    ),
+                  ],
                 ),
+              );
+            },
+          ),
 
           TextButton(
             onPressed: () {},
@@ -365,8 +394,6 @@ class _HomeScreenState extends State<HomeScreen> {
               style: textTheme.bodySmall!.copyWith(color: blue),
             ),
           ),
-
-
         ],
       ),
     );
@@ -374,9 +401,12 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class TodaysDealHomeScreenWidget extends StatelessWidget {
-   const TodaysDealHomeScreenWidget({
+  const TodaysDealHomeScreenWidget({
     super.key,
-    required this.todayDealsCarouselController, required this.width, required this.height, required this.textTheme,
+    required this.todayDealsCarouselController,
+    required this.width,
+    required this.height,
+    required this.textTheme,
   });
 
   final double width;
@@ -386,10 +416,17 @@ class TodaysDealHomeScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
-    final textTheme = Theme.of(context).textTheme;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final textTheme = Theme
+        .of(context)
+        .textTheme;
 
     return SizedBox(
       width: width,
@@ -554,7 +591,10 @@ class HomeScreenBanner extends StatelessWidget {
         return Builder(
           builder: (BuildContext context) {
             return Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               margin: const EdgeInsets.symmetric(horizontal: 5.0),
               decoration: BoxDecoration(
                 color: Colors.amber,
@@ -591,25 +631,37 @@ class HomeScreenCategoriesList extends StatelessWidget {
       child: ListView.builder(
         itemCount: categories.length,
         itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.symmetric(horizontal: width * 0.01),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image(
-                  image: AssetImage(
-                    'assets/images/categories/${categories[index]}.png',
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                PageTransition(
+                  child:
+                  ProductCategoryScreen(productCategory: categories[index]),
+                  type: PageTransitionType.rightToLeft,
+                ),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: width * 0.01),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image(
+                    image: AssetImage(
+                      'assets/images/categories/${categories[index]}.png',
+                    ),
+                    height: height * 0.06,
                   ),
-                  height: height * 0.06,
-                ),
-                Text(
-                  categories[index],
-                  style: textTheme.labelMedium,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis, // Handle long text
-                  maxLines: 1, // Prevent vertical overflow
-                ),
-              ],
+                  Text(
+                    categories[index],
+                    style: textTheme.labelMedium,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis, // Handle long text
+                    maxLines: 1, // Prevent vertical overflow
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -631,7 +683,9 @@ class HomeScreenUserAddressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final textTheme = Theme
+        .of(context)
+        .textTheme;
 
     return Container(
       height: height * 0.06,
@@ -643,45 +697,39 @@ class HomeScreenUserAddressBar extends StatelessWidget {
           end: Alignment.centerRight,
         ),
       ),
-      child:
-      Consumer<AddressProvider>(builder: (context, addressProvider, child) {
-        if (addressProvider.fetchedCurrentSelectedAddress && addressProvider.addressPresent) {
-          AddressModel selectedAddress = addressProvider.currentSelectedAddress;
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(
-                Icons.location_pin,
-                color: black,
-              ),
-              CommonFunctions.blankSpace(
-                0,
-                width * 0.02,
-              ),
-              Text(
-                'Deliver to ${selectedAddress.name} - ${selectedAddress.town}, ${selectedAddress.state}',
-                style: textTheme.bodySmall,
-              )
-            ],
-          );
-        } else {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(
-                Icons.location_pin,
-                color: black,
-              ),
-              CommonFunctions.blankSpace(
-                0,
-                width * 0.02,
-              ),
-              Text('Deliver to user - City, State', style: textTheme.bodySmall)
-            ],
-          );
-        }
-      }),
-
+      child: Consumer<AddressProvider>(
+        builder: (context, addressProvider, child) {
+          if (addressProvider.fetchedCurrentSelectedAddress &&
+              addressProvider.addressPresent) {
+            AddressModel selectedAddress =
+                addressProvider.currentSelectedAddress;
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(Icons.location_pin, color: black),
+                CommonFunctions.blankSpace(0, width * 0.02),
+                Text(
+                  'Deliver to ${selectedAddress.name} - ${selectedAddress
+                      .town}, ${selectedAddress.state}',
+                  style: textTheme.bodySmall,
+                ),
+              ],
+            );
+          } else {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(Icons.location_pin, color: black),
+                CommonFunctions.blankSpace(0, width * 0.02),
+                Text(
+                  'Deliver to user - City, State',
+                  style: textTheme.bodySmall,
+                ),
+              ],
+            );
+          }
+        },
+      ),
     );
   }
 }
@@ -723,41 +771,30 @@ class HomePageAppBar extends StatelessWidget {
             child: Container(
               width: width * 0.81,
               height: height * 0.06,
-              padding: EdgeInsets.symmetric(
-                horizontal: width * 0.04,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: width * 0.04),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
-                  5,
-                ),
-                border: Border.all(
-                  color: grey,
-                ),
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: grey),
                 color: white,
               ),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.search,
-                    color: black,
-                  ),
+                  Icon(Icons.search, color: black),
                   Padding(
-                    padding: EdgeInsets.only(
-                      left: width * 0.03,
-                    ),
+                    padding: EdgeInsets.only(left: width * 0.03),
                     child: Text(
                       'Search Amazon.in',
-                      style: Theme.of(context)
+                      style: Theme
+                          .of(
+                        context,
+                      )
                           .textTheme
                           .bodySmall!
                           .copyWith(color: grey),
                     ),
                   ),
                   const Spacer(),
-                  Icon(
-                    Icons.camera_alt_sharp,
-                    color: grey,
-                  ),
+                  Icon(Icons.camera_alt_sharp, color: grey),
                 ],
               ),
             ),
