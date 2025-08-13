@@ -48,6 +48,8 @@ dependencies:
   uuid: ^4.5.1
   http: ^1.2.0
   flutter_rating_bar: ^4.0.1
+  motion_toast: ^2.14.0
+  razorpay_flutter: ^1.4.0
 #  persistent_bottom_nav_bar_v2: ^4.2.8
 #  persistent_bottom_nav_bar_v2: ^5.0.2
 
